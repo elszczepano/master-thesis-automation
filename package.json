@@ -2,9 +2,11 @@
   "name": "master-degree-automation",
   "version": "1.0.0",
   "description": "Code used to automate Twitter profiles scanning process",
-  "main": "index.js",
+  "main": "dist/server.js",
   "scripts": {
-    "build": "tsc --build",
+    "prestart": "npm run build",
+    "start": "node dist/server.js",
+    "build": "tsc --build && node dev/copyBuildFiles.js",
     "test": "exit 0",
     "lint": "eslint . --ext .ts",
     "lint:fix": "npm run lint -- --fix"
@@ -20,7 +22,8 @@
     "url": "https://github.com/elszczepano/master-degree-automation/issues"
   },
   "dependencies": {
-    "express": "4.17.3"
+    "express": "4.17.3",
+    "pug": "3.0.2"
   },
   "devDependencies": {
     "@cksource-cs/eslint-config-cs-module": "^3.1.0",

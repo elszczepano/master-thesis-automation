@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.wrapper {
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper__content {
+    margin: 0 auto;
+    width: 50%;
+    flex: 1 0 auto;
+}
+
+.wrapper__footer {
+    text-align: center;
+    flex-shrink: 0;
+}

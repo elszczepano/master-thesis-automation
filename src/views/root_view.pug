@@ -1,0 +1,18 @@
+html
+    head
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css")
+        link(rel="stylesheet" href="style.css")
+    body
+        .wrapper
+          .wrapper__content
+            h1(class="")
+              | Twitter Automation Scanner!
+            form(action="/profile-report" method="POST" id="scanProfile")
+              input(class="input is-medium form__input" id="profile" type="text" placeholder="Provide profile name" name="profile" required)
+              .form__submit
+                input(type="submit" value="Submit" class="button is-link is-medium")
+          footer(class="wrapper__footer")
+            div
+                span
+                  | Created by Dominik Szczepaniak 2022
