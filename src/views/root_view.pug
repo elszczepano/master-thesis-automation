@@ -6,12 +6,16 @@ html
     body
         .wrapper
           .wrapper__content
-            h1(class="")
+            h1(class="title scanner__header")
               | Twitter Automation Scanner!
+            div(class="box")
+              p 
+                | In the form below, please provide the Twitter profile name (<em>without the @ operator</em>)  to scan. Then, click the <span class="tag is-info is-light">Investigate</span> button.
             form(role="form" action="profile-report" method="POST" id="scanProfile")
-              input(class="input is-medium form__input" id="profile" type="text" placeholder="Provide profile name" name="profile" required)
-              .form__submit
-                input(type="submit" value="Submit" class="button is-link is-medium")
+              div(class="field")
+                input(class="input is-medium form__input" id="profile" type="text" placeholder="Provide profile name" name="profile" required)
+              div(class="field form__submit")
+                input(type="submit" value="Investigate" class="button is-link is-medium")
           footer(class="wrapper__footer")
             div
                 span

@@ -1,7 +1,11 @@
 body {
     display: flex;
     justify-content: center;
-    
+}
+
+.scanner__header {
+    text-align: center;
+    margin-top: 20px;
 }
 
 .wrapper {
@@ -19,4 +23,10 @@ body {
 .wrapper__footer {
     text-align: center;
     flex-shrink: 0;
+}
+
+.form__submit {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
