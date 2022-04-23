@@ -1,6 +1,7 @@
 import Service from './Service';
 import Router from './Router';
 import RootController from './controllers/RootController';
+import ProfileReportController from './controllers/ProfileReportController';
 
 const port: number = Number( process.env.PORT ) || 3000;
 
@@ -8,6 +9,7 @@ const port: number = Number( process.env.PORT ) || 3000;
     const service: Service = new Service( port );
 
     const rootController: RootController = new RootController();
+    const profileReportController: ProfileReportController = new ProfileReportController();
 
     const router: Router = new Router(
         [
@@ -15,6 +17,11 @@ const port: number = Number( process.env.PORT ) || 3000;
                 method: 'get',
                 path: '/',
                 controller: rootController
+            },
+            {
+                method: 'post',
+                path: '/profile-report',
+                controller: profileReportController
             }
         ]
     );

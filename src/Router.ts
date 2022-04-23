@@ -1,5 +1,5 @@
 import { Router as ExpressRouter } from 'express';
-import path from 'path';
+import bodyParser from 'body-parser';
 
 import { IController } from './controllers/Controller';
 
@@ -18,6 +18,16 @@ export default class Router {
         this._router = ExpressRouter();
 
         for ( const { method, path, controller } of routes ) {
+            if ( ['put', 'post' ].includes( method ) ) {
+                this._router[ method ](
+                    path,
+                    bodyParser.urlencoded( { extended: false } ),
+                    controller.execute
+                );
+
+                continue;
+            }
+
             this._router[ method ]( path, controller.execute );
         }
     }
