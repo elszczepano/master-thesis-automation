@@ -1,6 +1,6 @@
 # Twitter Automation Scanner
 
-The application is an automation prepared for Master thesis purposes. The goal of such an automation is to speed up the process of verifying whether the investigated Twitter account can be treated as a potential fake. The scanning process checks the following list of resources:
+The application is an automation prepared for Master thesis research and experimenting purposes. The goal of such an automation is to speed up the process of verifying whether the investigated Twitter account can be treated as a potential fake. The scanning process checks the following list of resources:
 
 * to...
 * be...
