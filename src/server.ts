@@ -1,7 +1,11 @@
+import dotenv from 'dotenv';
+
 import Service from './Service';
 import Router from './Router';
 import RootController from './controllers/RootController';
 import ProfileReportController from './controllers/ProfileReportController';
+
+dotenv.config();
 
 const port: number = Number( process.env.PORT ) || 3000;
 
