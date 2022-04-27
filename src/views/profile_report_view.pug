@@ -6,8 +6,13 @@ html
     body
         .wrapper
           .wrapper__content
-            h1(class="")
+            h1(class="title scanner__header")
               | Report for #{profile}
+            form(role="form" action="profile-report" method="POST" id="scanProfile")
+              div(class="field")
+                input(class="input is-medium form__input" id="profile" type="text" placeholder="Scan another profile" name="profile" required)
+              div(class="field form__submit")
+                input(type="submit" value="Scan!" class="button is-link is-medium")
           footer(class="wrapper__footer")
             div
                 span
