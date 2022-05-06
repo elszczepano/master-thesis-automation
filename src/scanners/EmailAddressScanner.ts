@@ -1,12 +1,45 @@
-import { Browser } from 'puppeteer';
+import { Browser, Page } from 'puppeteer';
 
 import { IScanner } from './Scanner';
 
 export default class EmailAddressScanner implements IScanner {
     public constructor( private readonly _browser: Browser ) {}
 
-    public scan(): Promise<string> {
+    public async scan( profile: string ): Promise<string> {
+        const page: Page = await this._browser.newPage();
 
+        await page.setUserAgent(
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
+        )
+        await page.setExtraHTTPHeaders( {
+            'Accept-Language': 'en-US,en;q=0.9'
+        } );
+
+        const resetPasswordInputField: string = 'input[name=username]'; 
+        const resetPasswordButton: string = 'div[data-testid="ocfEnterTextNextButton"]';
+
+        await page.goto('https://twitter.com/i/flow/password_reset');
+
+        // Fill the reset password form
+        await page.waitForSelector( resetPasswordInputField );
+        await page.type( resetPasswordInputField, profile );
+        await page.click( resetPasswordButton );
+
+        await page.waitForTimeout( 3000 );
+        
+        // Search for email field via X-Path.
+        const [ resetPasswordValues ] = await page.$x( `//span[contains(text(),'Email')]` );
+
+        // TODO: debug and get values
+        // Calling reset password a few times in a row causes that Twitter blocks further requests for some time.
+        const email: string = resetPasswordValues ?? 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.'
+
+        // TODO: debug and get values
+        const html = await page.content();
+
+        console.log( resetPasswordValues, html )
+
+        return `<tr><td>Email address</td><td>${ email }</td></tr>`;
     }
 
     public get name() {

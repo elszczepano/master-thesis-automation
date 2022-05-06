@@ -22,7 +22,7 @@ export default class Router {
                 this._router[ method ](
                     path,
                     bodyParser.urlencoded( { extended: false } ),
-                    controller.execute
+                    controller.execute.bind( controller )
                 );
 
                 continue;

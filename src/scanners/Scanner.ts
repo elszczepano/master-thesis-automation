@@ -1,4 +1,4 @@
 export interface IScanner {
-    scan(): Promise<string>;
+    scan( profile: string ): Promise<string>;
     name: string;
 }
