@@ -8,12 +8,13 @@ export default class EmailAddressScanner implements IScanner {
     public async scan( profile: string ): Promise<string> {
         const page: Page = await this._browser.newPage();
 
+        // Pretend that we do not use a headless browser
         await page.setUserAgent(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"
-        )
-        await page.setExtraHTTPHeaders( {
-            'Accept-Language': 'en-US,en;q=0.9'
-        } );
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
+        );
+
+        // Make sure the english page version is fetched
+        await page.setExtraHTTPHeaders( { 'Accept-Language': 'en-US,en;q=0.9' } );
 
         const resetPasswordInputField: string = 'input[name=username]'; 
         const resetPasswordButton: string = 'div[data-testid="ocfEnterTextNextButton"]';
@@ -25,21 +26,19 @@ export default class EmailAddressScanner implements IScanner {
         await page.type( resetPasswordInputField, profile );
         await page.click( resetPasswordButton );
 
-        await page.waitForTimeout( 3000 );
+        // Wait for page load
+        await page.waitForTimeout( 1000 );
         
         // Search for email field via X-Path.
-        const [ resetPasswordValues ] = await page.$x( `//span[contains(text(),'Email')]` );
+        const [ resetPasswordElement ] = await page.$x( `//span[contains(text(),'Email')]` );
 
-        // TODO: debug and get values
-        // Calling reset password a few times in a row causes that Twitter blocks further requests for some time.
-        const email: string = resetPasswordValues ?? 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.'
+        let email: string = '';
 
-        // TODO: debug and get values
-        const html = await page.content();
+        if ( resetPasswordElement ) {
+            email = ( await resetPasswordElement.evaluate( el => el.textContent ) as string ).replace( /(.*)to /, "" );
+        }
 
-        console.log( resetPasswordValues, html )
-
-        return `<tr><td>Email address</td><td>${ email }</td></tr>`;
+        return `<td>Email address</td><td>${ email || 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.' }</td>`;
     }
 
     public get name() {

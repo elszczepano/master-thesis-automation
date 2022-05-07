@@ -30,3 +30,7 @@ body {
     display: flex;
     justify-content: center;
 }
+
+.scanner_results {
+    width: 100%;
+}

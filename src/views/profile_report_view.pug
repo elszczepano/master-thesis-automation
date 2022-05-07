@@ -8,6 +8,17 @@ html
           .wrapper__content
             h1(class="title scanner__header")
               | Report for #{profile}
+            table(class="table scanner_results")
+              thead
+                tr 
+                  th 
+                    | Element
+                  th 
+                    | Value
+              tbody
+                each result in results
+                  tr
+                  | !{result}
             form(role="form" action="profile-report" method="POST" id="scanProfile")
               div(class="field")
                 input(class="input is-medium form__input" id="profile" type="text" placeholder="Scan another profile" name="profile" required)
