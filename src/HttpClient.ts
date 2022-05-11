@@ -1,5 +1,4 @@
 import { IncomingHttpHeaders } from 'http';
-import { Readable } from 'stream';
 
 import { request, Dispatcher } from 'undici';
 
@@ -7,7 +6,7 @@ interface IHttpClientConfig {
     baseUrl: string;
 }
 
-type HttpBody = string | Buffer | Uint8Array | Readable | null | undefined;
+type HttpBody = Record<string,unknown> | null | undefined;
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 export type HttpResponse = Dispatcher.ResponseData;
 
@@ -17,6 +16,7 @@ export interface IHttpClient {
     put( url: string, body?: HttpBody, headers?: Partial<IncomingHttpHeaders> ): Promise<Dispatcher.ResponseData>;
     delete( url: string, headers?: Partial<IncomingHttpHeaders> ): Promise<Dispatcher.ResponseData>;
     patch( url: string, body?: HttpBody, headers?: Partial<IncomingHttpHeaders> ): Promise<Dispatcher.ResponseData>;
+    download( url: string, options?: { base64?: boolean } ): Promise<string | ArrayBuffer>;
 }
 
 export default class HttpClient implements IHttpClient {
@@ -45,12 +45,26 @@ export default class HttpClient implements IHttpClient {
         return this._sendRequest( 'PATCH', url, headers, body );
     }
 
+    public async download( url: string, options?: { base64?: boolean } ): Promise<string | ArrayBuffer> {
+        const response: Dispatcher.ResponseData = await this.get( url );
+
+        const fileBuffer: ArrayBuffer = await response.body.arrayBuffer();
+
+        if ( options?.base64 ) {
+            return btoa( String.fromCharCode( ...new Uint8Array( fileBuffer ) ) );
+        }
+
+        return fileBuffer;
+    } 
+
     private _sendRequest(
         method: Method,
         url: string,
         headers: Partial<IncomingHttpHeaders> = {},
-        body: HttpBody = null
+        body?: HttpBody
     ): Promise<Dispatcher.ResponseData> {
-        return this._requestFunction( url, { ...this._config, method, headers, body } );
+        const stringifiedBody: string | null = body ? JSON.stringify( body ): null;
+
+        return this._requestFunction( url, { ...this._config, method, headers, body: stringifiedBody } );
     }
 }
