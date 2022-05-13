@@ -26,7 +26,7 @@ interface IDarwinLabsScanResults {
     }[];
 }
 
-export default class EmailAddressScanner implements IScanner {
+export default class ProfilePictureScanner implements IScanner {
     public constructor(
         private readonly _browser: Browser,
         private readonly _httpClient: IHttpClient

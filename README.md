@@ -3,6 +3,7 @@
 The application is an automation prepared for Master thesis research and experimenting purposes. The goal of such an automation is to speed up the process of verifying whether the investigated Twitter account can be treated as a potential fake. The scanning process checks the following list of resources:
 
 * Checking the email address - as Twitter does not share the full email address we are not able to get it in a legal way. However it provides a few letters and the length of the email address that is a hint in the investigation.
+* Verifying whether a profile picture from scanned profile is fake e.g. generate via [this person does not exist](https://thispersondoesnotexist.com/).
 
 ## Development
 

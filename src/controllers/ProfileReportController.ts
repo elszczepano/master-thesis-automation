@@ -16,13 +16,7 @@ export default class ProfileReportController implements IController {
 
         const scanners: IScanner[] = this._scannersFactory.scanners;
 
-        const results: string[] = [];
-
-        for ( const scanner of scanners ) {
-            const result: string = await scanner.scan( profile );
-
-            results.push( result );
-        }
+        const results: string[] = await Promise.all( scanners.map( scanner => scanner.scan( profile ) )  );
 
         response.render( 'profile_report_view', { profile, results } );
     }
