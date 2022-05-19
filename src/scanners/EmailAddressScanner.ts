@@ -1,11 +1,15 @@
 import { Browser, Page } from 'puppeteer';
 
-import { IScanner } from './Scanner';
+import Scanner from './Scanner';
 
-export default class EmailAddressScanner implements IScanner {
-    public constructor( private readonly _browser: Browser ) {}
+export default class EmailAddressScanner extends Scanner {
+    protected readonly _scannedElement: string = 'Email address';
 
-    public async scan( profile: string ): Promise<string> {
+    public constructor( private readonly _browser: Browser ) {
+        super() 
+    }
+
+    protected async _scan( profile: string ): Promise<string> {
         const page: Page = await this._browser.newPage();
 
         // Pretend that we do not use a headless browser
@@ -38,10 +42,6 @@ export default class EmailAddressScanner implements IScanner {
             email = ( await resetPasswordElement.evaluate( el => el.textContent ) as string ).replace( /(.*)to /, "" );
         }
 
-        return `<td>Email address</td><td>${ email || 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.' }</td>`;
-    }
-
-    public get name() {
-        return 'EmailScanner';
+        return email || 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.';
     }
 }

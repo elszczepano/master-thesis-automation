@@ -2,7 +2,7 @@ import { Browser, Page, ElementHandle } from 'puppeteer';
 import dotenv from 'dotenv';
 
 import { IHttpClient, HttpResponse } from '../HttpClient';
-import { IScanner } from './Scanner';
+import Scanner from './Scanner';
 
 dotenv.config();
 
@@ -26,13 +26,17 @@ interface IDarwinLabsScanResults {
     }[];
 }
 
-export default class ProfilePictureScanner implements IScanner {
+export default class ProfilePictureScanner extends Scanner {
+    protected readonly _scannedElement: string = 'Profile picture scan report';
+
     public constructor(
         private readonly _browser: Browser,
         private readonly _httpClient: IHttpClient
-     ) { }
+    ) {
+        super()
+    }
 
-    public async scan( profile: string ): Promise<string> {
+    protected async _scan( profile: string ): Promise<string> {
         const page: Page = await this._browser.newPage();
 
         // Pretend that we do not use a headless browser
@@ -74,10 +78,6 @@ export default class ProfilePictureScanner implements IScanner {
 
         const fakePercentage: string = `${ Math.round( response.result[ 0 ].inference.confidence * 100 ) }%`;
 
-        return `<td>Profile picture scan report</td><td>${ response.result[ 0 ].label } (${ fakePercentage })</td>`;
-    }
-
-    public get name() {
-        return 'ProfilePictureScanner';
+        return `${ response.result[ 0 ].label } (${ fakePercentage })`;
     }
 }
