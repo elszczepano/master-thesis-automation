@@ -78,6 +78,6 @@ export default class ProfilePictureScanner extends Scanner {
 
         const fakePercentage: string = `${ Math.round( response.result[ 0 ].inference.confidence * 100 ) }%`;
 
-        return `${ response.result[ 0 ].label } (${ fakePercentage })`;
+        return `<img src="${ profilePictureUrl }"><p>${ response.result[ 0 ].label } (${ fakePercentage })<p>`;
     }
 }
