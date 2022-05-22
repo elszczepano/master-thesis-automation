@@ -1,13 +1,8 @@
-import { Browser, Page, ElementHandle } from 'puppeteer';
-import dotenv from 'dotenv';
-
 import { IHttpClient, HttpResponse } from '../HttpClient';
 import Scanner from './Scanner';
-
-dotenv.config();
+import Utils from '../Utils';
 
 const SCANNER_URL = 'https://darwin.v7labs.com/ai/models/0e322ea6-3c51-4168-8a20-b25d0860664f/infer';
-const API_KEY = `ApiKey ${ process.env.DARWIN_LABS_API_KEY }`;
 
 interface IDarwinLabsScanResults {
     action: string;
@@ -26,38 +21,31 @@ interface IDarwinLabsScanResults {
     }[];
 }
 
+interface IGetUserDataResults {
+    data: {
+        name: string;
+        username: string;
+        profile_image_url: string;
+        id: string;
+    }
+}
+
 export default class ProfilePictureScanner extends Scanner {
     protected readonly _scannedElement: string = 'Profile picture scan report';
 
-    public constructor(
-        private readonly _browser: Browser,
-        private readonly _httpClient: IHttpClient
-    ) {
+    public constructor( private readonly _httpClient: IHttpClient ) {
         super()
     }
 
     protected async _scan( profile: string ): Promise<string> {
-        const page: Page = await this._browser.newPage();
-
-        // Pretend that we do not use a headless browser
-        await page.setUserAgent(
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
+        const getUserDataResults: HttpResponse = await this._httpClient.get(
+            `https://api.twitter.com/2/users/by/username/${profile}?user.fields=profile_image_url`,
+            { ...Utils.getTwitterAPIAuthHeaders() }
         );
 
-        // Make sure the English page version is fetched
-        await page.setExtraHTTPHeaders( { 'Accept-Language': 'en-US,en;q=0.9' } );
+        const user: IGetUserDataResults = await getUserDataResults.body.json();
 
-        const imageContainer: string = 'img[alt=Image]';
-
-        await page.goto( `https://twitter.com/${ profile }/photo` );
-
-        const element: ElementHandle | null = await page.waitForSelector( imageContainer );
-
-        if ( !element ) {
-            return '<td>Profile picture scan report</td><td>Cannot download a profile picture</td>';
-        }
-
-        const profilePictureUrl: string = await element.evaluate( ( el: any ) => el.src );
+        const profilePictureUrl: string = user.data.profile_image_url.replace( '_normal', '' );
 
         const base64ProfilePicture: string = await this._httpClient.download( profilePictureUrl, { base64: true } ) as string;
 
@@ -69,7 +57,7 @@ export default class ProfilePictureScanner extends Scanner {
                 }
             },
             {
-                authorization: API_KEY,
+                authorization: Utils.getDarwinLabsAPIKey(),
                 'content-type': 'application/json'
             }
         );

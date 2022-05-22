@@ -14,7 +14,7 @@ export default class ScannersFactory {
         httpClient: HttpClient
     ) {
         const emailAddressScanner: EmailAddressScanner = new EmailAddressScanner( browser );
-        const profilePictureScanner: ProfilePictureScanner = new ProfilePictureScanner( browser, httpClient );
+        const profilePictureScanner: ProfilePictureScanner = new ProfilePictureScanner( httpClient );
 
         this._scanners.push( emailAddressScanner );
         this._scanners.push( profilePictureScanner );

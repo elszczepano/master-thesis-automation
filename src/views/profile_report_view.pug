@@ -7,7 +7,8 @@ html
         .wrapper
           .wrapper__content
             h1(class="title scanner__header")
-              | Report for #{profile}
+              | Report for 
+              a(target="_blank" href="https://twitter.com/" + profile) #{profile}
             table(class="table scanner_results")
               thead
                 tr 
