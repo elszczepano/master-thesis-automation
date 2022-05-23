@@ -45,7 +45,7 @@ export default class ProfilePictureScanner extends Scanner {
 
         const user: IGetUserDataResults = await getUserDataResults.body.json();
 
-        const profilePictureUrl: string = user.data.profile_image_url.replace( '_normal', '' );
+        const profilePictureUrl: string = user.data.profile_image_url.replace( '_normal', '' ); // Get full size image URL.
 
         const base64ProfilePicture: string = await this._httpClient.download( profilePictureUrl, { base64: true } ) as string;
 
