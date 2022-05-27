@@ -13,7 +13,7 @@ dotenv.config();
 
 const port: number = Number( process.env.PORT ) || 3000;
 
-console.log( process.env.PORT , port )
+console.log( process.env.PORT, port );
 
 ( async () => {
     const service: Service = new Service( port );
