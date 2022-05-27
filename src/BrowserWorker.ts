@@ -4,7 +4,7 @@ export default class BrowserWorker {
     private _browser: Browser;
 
     public async launch(): Promise<void> {
-        this._browser = await puppeteer.launch( {} );
+        this._browser = await puppeteer.launch( { args: [ '--no-sandbox' ] } );
     }
 
     public get browser(): Browser {
