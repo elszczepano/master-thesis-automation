@@ -21,7 +21,7 @@ interface IGetUserDataResults {
     }
 }
 
-export default class UserScanner extends Scanner {
+export default class UserDetailsScanner extends Scanner {
     protected readonly _scannedElement: string = 'User details';
 
     public constructor( private readonly _httpClient: IHttpClient ) {
@@ -34,7 +34,7 @@ export default class UserScanner extends Scanner {
             { ...Utils.getTwitterAPIAuthHeaders() }
         );
 
-        const { data } = await getUserDataResults.body.json();
+        const { data } = await getUserDataResults.body.json() as IGetUserDataResults;
 
         const createdAt: Date = new Date( data.created_at );
 
