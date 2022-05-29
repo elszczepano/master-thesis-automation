@@ -47,7 +47,7 @@ export default class UserScanner extends Scanner {
                 <li>Profile is live for <strong>${ profileLifetime }</strong> days.</li>
                 <li>Description: <strong>${ data.description }</strong></li>
                 <li>Followers count: <strong>${ data.public_metrics.followers_count }</strong></li>
-                <li>Following count: <strong>${ data.public_metrics.followers_count }</strong></li>
+                <li>Following count: <strong>${ data.public_metrics.following_count }</strong></li>
                 <li>Tweets count: <strong>${ data.public_metrics.tweet_count }</strong></li>
                 <li>Listed count: <strong>${ data.public_metrics.listed_count }</strong></li>
             </ul>
