@@ -1,6 +1,6 @@
 import Utils from '../Utils';
 
-const DEFAULT_WAIT_TASK_TIMEOUT: number = 15 * 1000;
+const DEFAULT_WAIT_TASK_TIMEOUT: number = 60 * 1000;
 
 export interface IScanner {
     scan( profile: string ): Promise<string>;
@@ -28,6 +28,8 @@ export default abstract class Scanner implements IScanner {
 
             return `<td>${ this._scannedElement }</td><td>Scan timeout. Try to scan again.</td>`;
         } catch ( error ) {
+            console.error( `Scanning ${ this._scannedElement } failed. Reason: `, error );
+
             return `<td>${ this._scannedElement }</td><td>Scan could not be processed correctly</td>`;
         }
     }

@@ -42,4 +42,5 @@ body {
 
 .user_details__list {
     list-style: disc;
+    list-style-position: inside;
 }
