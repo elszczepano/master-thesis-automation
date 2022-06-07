@@ -2,8 +2,6 @@ import { IHttpClient, HttpResponse } from '../HttpClient';
 import Scanner from './Scanner';
 import Utils from '../Utils';
 
-const DAY_LENGTH: number = 1000 * 60 * 60 * 24;
-
 interface IGetUserDataResults {
     data: {
         description: string;
@@ -38,7 +36,7 @@ export default class UserDetailsScanner extends Scanner {
 
         const createdAt: Date = new Date( data.created_at );
 
-        const profileLifetime: number = Math.round( ( new Date().getTime() - createdAt.getTime() ) / DAY_LENGTH );
+        const profileLifetime: number = Utils.getDaysDiff( new Date(), createdAt );
 
         return `
             <ul class="user_details__list">

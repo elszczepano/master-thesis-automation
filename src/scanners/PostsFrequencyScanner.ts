@@ -15,6 +15,13 @@ interface IGetUserDataResults {
         description: string;
         username: string;
         id: string;
+        created_at: string;
+        public_metrics: {
+            followers_count: number;
+            following_count: number;
+            tweet_count: number;
+            listed_count: number;
+        };
     }
 }
 
@@ -37,7 +44,7 @@ export default class PostsFrequencyScanner extends Scanner {
 
     protected async _scan( profile: string ): Promise<string> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
-            `https://api.twitter.com/2/users/by/username/${ profile }`,
+            `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,public_metrics`,
             { ...Utils.getTwitterAPIAuthHeaders() }
         );
 
@@ -45,6 +52,8 @@ export default class PostsFrequencyScanner extends Scanner {
 
         let paginationToken: string | undefined = '';
         const postsFrequencyMap: Map<string,number> = new Map();
+        let probablyPlannedPostsCount: number = 0;
+        let lastActivityAt: Date = new Date( 0 );
         
         while ( paginationToken !== undefined ) {
             const getUserTweetsResults: HttpResponse = await this._httpClient.get(
@@ -59,11 +68,21 @@ export default class PostsFrequencyScanner extends Scanner {
                 break;
             }
 
-            tweets.map( tweet => {
-                const tweetDate: string = tweet.created_at.split('T')[ 0 ];
-                const currentFrequency: number = postsFrequencyMap.get( tweetDate ) ?? 0;
+            if ( paginationToken === '' ) {
+                lastActivityAt = new Date( tweets[ 0 ].created_at );
+            }
 
-                postsFrequencyMap.set( tweetDate, currentFrequency + 1 );
+            tweets.map( tweet => {
+                const tweetDay: string = tweet.created_at.split('T')[ 0 ];
+                const tweetDate: Date = new Date( tweet.created_at );
+                const currentFrequency: number = postsFrequencyMap.get( tweetDay ) ?? 0;
+                
+                // Planner does not allow to set seconds and milliseconds for a scheduled tweet.
+                if ( !tweetDate.getSeconds() && !tweetDate.getMilliseconds() ) {
+                    probablyPlannedPostsCount++;
+                }
+
+                postsFrequencyMap.set( tweetDay, currentFrequency + 1 );
             } );
 
             paginationToken = meta.next_token;
@@ -74,10 +93,18 @@ export default class PostsFrequencyScanner extends Scanner {
         const maxTweetsPerDay: number = frequencies.length ? Math.max( ...frequencies ) : 0;
         const averageTweetsPerDay: number = frequencies.length ? Utils.getAverageValue( [ ...frequencies ] ): 0;
 
+        const createdAt: Date = new Date( data.created_at );
+
+        const profileLifetime: number = Utils.getDaysDiff( new Date(), createdAt );
+
         return `
             <ul class="details__list">
-                <li>Average number of posts in a single day: <strong>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
+                <li>Last activity at: <strong>${ lastActivityAt.toISOString() }</strong></li>
+                <li>Average number of posts in active days: <strong>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
+                <li>Average number of posts overall: <strong>${ ( data.public_metrics.tweet_count / profileLifetime ).toFixed( 2 ) }</strong> (incl. inactive days)</li>
+                <li>Number of inactive days: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong> (incl. inactive days)</li>
                 <li>Max posts in a single day: <strong>${ maxTweetsPerDay }</strong></li>
+                <li>Probably planned posts count: <strong>${ probablyPlannedPostsCount } (${ ( ( probablyPlannedPostsCount / data.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) }%)</strong></li>
             </ul>
         `;
     }
