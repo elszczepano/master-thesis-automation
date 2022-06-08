@@ -16,7 +16,26 @@ The application is an automation prepared for Master thesis research and experim
   * Last activity date
   * A total number of inactive days
   * Max number of posts in a single day
-  * Number of posts probably created via planner - if a post is created via planner then the number of seconds and milliseconds in the timestamp equals 0. 
+  * Number of posts probably created via planner - if a post is created via planner then the number of seconds and milliseconds in the timestamp equals 0.
+
+## Application flow diagram
+
+```mermaid
+flowchart BT
+    A(Actor) -- passes account ID ----> B[Application]
+    B -- returns report --> A
+    subgraph Application
+        C[Profile Picture Scanner] <---> B
+        E[Posts Frequency Scanner] <---> B
+        F[User Details Scanner] <---> B
+        D[Email Address Scanner] <---> B
+        H[darwin.v7labs.com] <---> C
+        I["Headless Chrome Browser (Puppeteer)"] <---> D
+        J[Twitter REST API] <---> C
+        J[Twitter REST API] <---> E
+        J[Twitter REST API] <---> F
+    end
+```
 
 ## Development
 
