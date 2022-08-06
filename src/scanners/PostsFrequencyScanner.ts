@@ -109,10 +109,10 @@ export default class PostsFrequencyScanner extends Scanner {
             </ul>
             `,
             explanation: `
-                Average number of posts in active days for real accounts usually does not exceed a few dozens.
+                Average number of posts in active days for real accounts usually does not exceed a few dozens.<br>
                 If overage average value is significantly different from average value from active days it may be an indicate that an account
-                have a large peaks of activity with a long idle time between.
-                Probably planned posts count is a percentage ratio of posts PROBABLY planned via the posts planner.
+                have a large peaks of activity with a long idle time between.<br>
+                Probably planned posts count is a percentage ratio of posts <strong>PROBABLY</strong> planned via the posts planner.
             `   
         };
     }

@@ -51,7 +51,7 @@ export default class UserDetailsScanner extends Scanner {
                 <li>Listed count: <strong>${ data.public_metrics.listed_count }</strong></li>
             </ul>
             `,
-            explanation: 'Basic metrics from the scanned Twitter profile'
+            explanation: 'Basic metrics from the scanned Twitter profile.'
         };
     }
 }
