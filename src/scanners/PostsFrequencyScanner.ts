@@ -103,7 +103,7 @@ export default class PostsFrequencyScanner extends Scanner {
                 <li>Last activity at: <strong>${ lastActivityAt.toISOString() }</strong></li>
                 <li>Average number of posts in active days: <strong>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
                 <li>Average number of posts overall: <strong>${ ( data.public_metrics.tweet_count / profileLifetime ).toFixed( 2 ) }</strong> (incl. inactive days)</li>
-                <li>Number of inactive days: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong> (incl. inactive days)</li>
+                <li>Number of inactive days: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong></li>
                 <li>Max posts in a single day: <strong>${ maxTweetsPerDay }</strong></li>
                 <li>Probably planned posts count: <strong>${ probablyPlannedPostsCount } (${ ( ( probablyPlannedPostsCount / data.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) }%)</strong></li>
             </ul>

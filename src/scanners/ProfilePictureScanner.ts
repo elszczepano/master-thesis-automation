@@ -68,7 +68,7 @@ export default class ProfilePictureScanner extends Scanner {
 
         return {
             value: `<img src="${ profilePictureUrl }"><p>${ response.result[ 0 ].label } (${ fakePercentage })<p>`,
-            explanation: 'The metric bases on a model learned from artificially generated human faces created via e.g. <a href="thispersondoesnotexist.com" target="_blank">This Person Does Not Exist</a>'
+            explanation: 'The metric bases on a model learned from artificially generated human faces created via e.g. <a href="https://thispersondoesnotexist.com" target="_blank">This Person Does Not Exist</a>'
         };
     }
 }
