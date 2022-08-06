@@ -13,13 +13,17 @@ html
               thead
                 tr 
                   th 
-                    | Element
+                    | Scanned element
                   th 
                     | Value
+                  th 
+                    | Explanation
               tbody
                 each result in results
                   tr
-                  | !{result}
+                    td !{result.element}
+                    td !{result.value}
+                    td !{result.explanation}
             form(role="form" action="profile-report" method="POST" id="scanProfile")
               div(class="field")
                 input(class="input is-medium form__input" id="profile" type="text" placeholder="Scan another profile" name="profile" required)

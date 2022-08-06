@@ -1,5 +1,5 @@
 import { IHttpClient, HttpResponse } from '../HttpClient';
-import Scanner from './Scanner';
+import Scanner, { IScannerOutput } from './Scanner';
 import Utils from '../Utils';
 
 interface IGetUserDataResults {
@@ -26,7 +26,7 @@ export default class UserDetailsScanner extends Scanner {
         super()
     }
 
-    protected async _scan( profile: string ): Promise<string> {
+    protected async _scan( profile: string ): Promise<IScannerOutput> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
             `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,description,name,public_metrics`,
             { ...Utils.getTwitterAPIAuthHeaders() }
@@ -38,7 +38,8 @@ export default class UserDetailsScanner extends Scanner {
 
         const profileLifetime: number = Utils.getDaysDiff( new Date(), createdAt );
 
-        return `
+        return {
+            value: `
             <ul class="user_details__list">
                 <li>Profile full name: <strong>${ data.name }</strong>.</li>
                 <li>Profile created at: <strong>${ new Intl.DateTimeFormat( 'en-GB' ).format( createdAt ) }</strong>.</li>
@@ -49,6 +50,8 @@ export default class UserDetailsScanner extends Scanner {
                 <li>Tweets count: <strong>${ data.public_metrics.tweet_count }</strong></li>
                 <li>Listed count: <strong>${ data.public_metrics.listed_count }</strong></li>
             </ul>
-        `;
+            `,
+            explanation: 'Basic metrics from the scanned Twitter profile'
+        };
     }
 }

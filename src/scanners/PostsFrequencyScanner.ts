@@ -1,5 +1,5 @@
 import { IHttpClient, HttpResponse } from '../HttpClient';
-import Scanner from './Scanner';
+import Scanner, { IScannerOutput } from './Scanner';
 import Utils from '../Utils';
 
 const MAX_RESULTS_PER_PAGE: number = 50;
@@ -42,7 +42,7 @@ export default class PostsFrequencyScanner extends Scanner {
         super()
     }
 
-    protected async _scan( profile: string ): Promise<string> {
+    protected async _scan( profile: string ): Promise<IScannerOutput> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
             `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,public_metrics`,
             { ...Utils.getTwitterAPIAuthHeaders() }
@@ -97,7 +97,8 @@ export default class PostsFrequencyScanner extends Scanner {
 
         const profileLifetime: number = Utils.getDaysDiff( new Date(), createdAt );
 
-        return `
+        return {
+            value: `
             <ul class="details__list">
                 <li>Last activity at: <strong>${ lastActivityAt.toISOString() }</strong></li>
                 <li>Average number of posts in active days: <strong>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
@@ -106,7 +107,14 @@ export default class PostsFrequencyScanner extends Scanner {
                 <li>Max posts in a single day: <strong>${ maxTweetsPerDay }</strong></li>
                 <li>Probably planned posts count: <strong>${ probablyPlannedPostsCount } (${ ( ( probablyPlannedPostsCount / data.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) }%)</strong></li>
             </ul>
-        `;
+            `,
+            explanation: `
+                Average number of posts in active days for real accounts usually does not exceed a few dozens.
+                If overage average value is significantly different from average value from active days it may be an indicate that an account
+                have a large peaks of activity with a long idle time between.
+                Probably planned posts count is a percentage ratio of posts PROBABLY planned via the posts planner.
+            `   
+        };
     }
 
     private _getUserTweetsAPIUrl( id: string, paginationToken?: string ): string {

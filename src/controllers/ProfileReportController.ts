@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import ScannersFactory from '../scanners/ScannerFactory';
-import { IScanner } from '../scanners/Scanner';
+import { IScanner, IScannerReport } from '../scanners/Scanner';
 import { IController } from './Controller';
 
 interface IRequestBody {
@@ -16,7 +16,7 @@ export default class ProfileReportController implements IController {
 
         const scanners: IScanner[] = this._scannersFactory.scanners;
 
-        const results: string[] = await Promise.all( scanners.map( scanner => scanner.scan( profile ) )  );
+        const results: IScannerReport[] = await Promise.all( scanners.map( scanner => scanner.scan( profile ) )  );
 
         response.render( 'profile_report_view', { profile, results } );
     }

@@ -1,36 +1,58 @@
 import Utils from '../Utils';
 
 const DEFAULT_WAIT_TASK_TIMEOUT: number = 60 * 1000;
+const INVALID_SCAN_PLACEHOLDER: string = 'N/A';
 
 export interface IScanner {
-    scan( profile: string ): Promise<string>;
+    scan( profile: string ): Promise<IScannerReport>;
+}
+
+export interface IScannerReport extends IScannerOutput {
+    element: string;
+}
+
+export interface IScannerOutput {
+    value: string;
+    explanation: string;
 }
 
 export default abstract class Scanner implements IScanner {
     protected abstract readonly _scannedElement: string;
 
-    protected abstract _scan( profile: string ): Promise<string>;
+    protected abstract _scan( profile: string ): Promise<IScannerOutput>;
 
-    public async scan( profile: string ): Promise<string> {
-        const scanResultPromise: Promise<string> = new Promise( ( resolve ) => {
+    public async scan( profile: string ): Promise<IScannerReport> {
+        const scanResultPromise: Promise<IScannerOutput> = new Promise( ( resolve ) => {
             resolve( this._scan( profile ) );
         } );
 
         try {
-            const result: string | void = await Promise.race( [
+            const result: IScannerOutput | void = await Promise.race( [
                 scanResultPromise,
                 Utils.wait( DEFAULT_WAIT_TASK_TIMEOUT )
             ] );
 
             if ( result ) {
-                return `<td>${ this._scannedElement }</td><td>${ result }</td>`;
+                return {
+                    element: this._scannedElement,
+                    value: result.value,
+                    explanation: result.explanation
+                };
             }
 
-            return `<td>${ this._scannedElement }</td><td>Scan timeout. Try to scan again.</td>`;
+            return {
+                element: this._scannedElement,
+                value: INVALID_SCAN_PLACEHOLDER,
+                explanation: 'Scan timeout. Try to scan again.'
+            };
         } catch ( error ) {
             console.error( `Scanning ${ this._scannedElement } failed. Reason: `, error );
 
-            return `<td>${ this._scannedElement }</td><td>Scan could not be processed correctly</td>`;
+            return {
+                element: this._scannedElement,
+                value: INVALID_SCAN_PLACEHOLDER,
+                explanation: 'Scan could not be processed correctly'
+            };
         }
     }
 }

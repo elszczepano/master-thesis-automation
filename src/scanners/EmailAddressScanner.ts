@@ -1,6 +1,6 @@
 import { Browser, Page } from 'puppeteer';
 
-import Scanner from './Scanner';
+import Scanner, { IScannerOutput } from './Scanner';
 
 export default class EmailAddressScanner extends Scanner {
     protected readonly _scannedElement: string = 'Email address';
@@ -9,7 +9,7 @@ export default class EmailAddressScanner extends Scanner {
         super() 
     }
 
-    protected async _scan( profile: string ): Promise<string> {
+    protected async _scan( profile: string ): Promise<IScannerOutput> {
         const page: Page = await this._browser.newPage();
 
         // Pretend that we do not use a headless browser
@@ -42,6 +42,9 @@ export default class EmailAddressScanner extends Scanner {
             email = ( await resetPasswordElement.evaluate( el => el.textContent ) as string ).replace( /(.*)to /, "" );
         }
 
-        return email || 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.';
+        return {
+            value: email || 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.',
+            explanation: 'Email can be fetched only in an obfuscated form. Please check if a domain look suspicious or matches to some pattern with other scanned accounts.'
+        };
     }
 }
