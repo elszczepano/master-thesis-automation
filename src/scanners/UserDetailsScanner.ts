@@ -1,5 +1,5 @@
 import { IHttpClient, HttpResponse } from '../HttpClient';
-import Scanner, { IScannerOutput } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
 import Utils from '../Utils';
 
 interface IGetUserDataResults {
@@ -26,7 +26,7 @@ export default class UserDetailsScanner extends Scanner {
         super()
     }
 
-    protected async _scan( profile: string ): Promise<IScannerOutput> {
+    protected async _scan( { profile }: IScannerParams ): Promise<IScannerOutput> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
             `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,description,name,public_metrics`,
             { ...Utils.getTwitterAPIAuthHeaders() }

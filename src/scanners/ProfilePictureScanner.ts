@@ -1,5 +1,5 @@
 import { IHttpClient, HttpResponse } from '../HttpClient';
-import Scanner, { IScannerOutput } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
 import Utils from '../Utils';
 
 const SCANNER_URL = 'https://darwin.v7labs.com/ai/models/0e322ea6-3c51-4168-8a20-b25d0860664f/infer';
@@ -37,7 +37,7 @@ export default class ProfilePictureScanner extends Scanner {
         super()
     }
 
-    protected async _scan( profile: string ): Promise<IScannerOutput> {
+    protected async _scan( { profile }: IScannerParams ): Promise<IScannerOutput> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
             `https://api.twitter.com/2/users/by/username/${profile}?user.fields=profile_image_url`,
             { ...Utils.getTwitterAPIAuthHeaders() }

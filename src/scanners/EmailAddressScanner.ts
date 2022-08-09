@@ -1,6 +1,6 @@
 import { Browser, Page } from 'puppeteer';
 
-import Scanner, { IScannerOutput } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
 
 export default class EmailAddressScanner extends Scanner {
     protected readonly _scannedElement: string = 'Email address';
@@ -9,7 +9,7 @@ export default class EmailAddressScanner extends Scanner {
         super() 
     }
 
-    protected async _scan( profile: string ): Promise<IScannerOutput> {
+    protected async _scan( { profile }: IScannerParams ): Promise<IScannerOutput> {
         const page: Page = await this._browser.newPage();
 
         // Pretend that we do not use a headless browser

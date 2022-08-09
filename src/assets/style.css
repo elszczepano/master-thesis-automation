@@ -31,6 +31,11 @@ body {
     justify-content: center;
 }
 
+.form__input {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
 .scanner_results {
     width: 100%;
 }

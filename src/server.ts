@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import Service from './Service';
 import Router from './Router';
 import RootController from './controllers/RootController';
-import ProfileReportController from './controllers/ProfileReportController';
+import ScanResultController from './controllers/ScanResultController';
 import { Browser } from 'puppeteer';
 import BrowserWorker from './BrowserWorker';
 import HttpClient from './HttpClient';
@@ -25,7 +25,7 @@ const port: number = Number( process.env.PORT ) || 3000;
     const scannersFactory: ScannersFactory = new ScannersFactory( browser, httpClient );
 
     const rootController: RootController = new RootController();
-    const profileReportController: ProfileReportController = new ProfileReportController( scannersFactory, httpClient );
+    const scanResultController: ScanResultController = new ScanResultController( scannersFactory, httpClient );
 
     const router: Router = new Router(
         [
@@ -36,8 +36,8 @@ const port: number = Number( process.env.PORT ) || 3000;
             },
             {
                 method: 'post',
-                path: '/profile-report',
-                controller: profileReportController
+                path: '/scan-result',
+                controller: scanResultController
             }
         ]
     );

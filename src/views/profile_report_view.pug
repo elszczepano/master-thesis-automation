@@ -24,9 +24,18 @@ html
                     td !{result.element}
                     td !{result.value}
                     td !{result.explanation}
-            form(role="form" action="profile-report" method="POST" id="scanProfile")
+            form(role="form" action="scan-result" method="POST" id="scanProfile")
               div(class="field")
+                label(class="label" for="profile")
+                  | Profile name <span class="tag is-light is-danger">(required)</span>
                 input(class="input is-medium form__input" id="profile" type="text" placeholder="Scan another profile" name="profile" required)
+              div(class="field")
+                label(class="label" for="startDate")
+                  | Analyze Tweets from <span class="tag is-info is-light">(optional)</span>
+                input(class="input is-medium form__input" id="startDate" type="date" name="startDate")
+                label(class="label" for="endDate")
+                  | Analyze Tweets to <span class="tag is-info is-light">(optional)</span>
+                input(class="input is-medium form__input" id="endDate" type="date" name="endDate")
               div(class="field form__submit" id="submitContainer")
                 input(id="submitButton" type="submit" value="Scan!" class="button is-link is-medium")
           footer(class="wrapper__footer")

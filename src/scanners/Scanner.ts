@@ -4,7 +4,7 @@ const DEFAULT_WAIT_TASK_TIMEOUT: number = 60 * 1000;
 const INVALID_SCAN_PLACEHOLDER: string = 'N/A';
 
 export interface IScanner {
-    scan( profile: string ): Promise<IScannerReport>;
+    scan( profile: IScannerParams ): Promise<IScannerReport>;
 }
 
 export interface IScannerReport extends IScannerOutput {
@@ -16,14 +16,20 @@ export interface IScannerOutput {
     explanation: string;
 }
 
+export interface IScannerParams {
+    profile: string;
+    startDate?: Date;
+    endDate?: Date;
+}
+
 export default abstract class Scanner implements IScanner {
     protected abstract readonly _scannedElement: string;
 
-    protected abstract _scan( profile: string ): Promise<IScannerOutput>;
+    protected abstract _scan( params: IScannerParams ): Promise<IScannerOutput>;
 
-    public async scan( profile: string ): Promise<IScannerReport> {
+    public async scan( params: IScannerParams ): Promise<IScannerReport> {
         const scanResultPromise: Promise<IScannerOutput> = new Promise( ( resolve ) => {
-            resolve( this._scan( profile ) );
+            resolve( this._scan( params ) );
         } );
 
         try {

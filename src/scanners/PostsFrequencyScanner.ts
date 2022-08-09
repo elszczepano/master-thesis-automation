@@ -1,5 +1,5 @@
 import { IHttpClient, HttpResponse } from '../HttpClient';
-import Scanner, { IScannerOutput } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
 import Utils from '../Utils';
 
 const MAX_RESULTS_PER_PAGE: number = 50;
@@ -42,7 +42,7 @@ export default class PostsFrequencyScanner extends Scanner {
         super()
     }
 
-    protected async _scan( profile: string ): Promise<IScannerOutput> {
+    protected async _scan( { profile, startDate, endDate }: IScannerParams ): Promise<IScannerOutput> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
             `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,public_metrics`,
             { ...Utils.getTwitterAPIAuthHeaders() }
@@ -57,7 +57,7 @@ export default class PostsFrequencyScanner extends Scanner {
         
         while ( paginationToken !== undefined ) {
             const getUserTweetsResults: HttpResponse = await this._httpClient.get(
-                this._getUserTweetsAPIUrl( data.id, paginationToken ),
+                this._getUserTweetsAPIUrl( data.id, paginationToken, { startDate, endDate } ),
                 { ...Utils.getTwitterAPIAuthHeaders() }
             );
 
@@ -103,7 +103,7 @@ export default class PostsFrequencyScanner extends Scanner {
                 <li>Last activity at: <strong>${ lastActivityAt.toISOString() }</strong></li>
                 <li>Average number of posts in active days: <strong>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
                 <li>Average number of posts overall: <strong>${ ( data.public_metrics.tweet_count / profileLifetime ).toFixed( 2 ) }</strong> (incl. inactive days)</li>
-                <li>Number of inactive days: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong></li>
+                <li>Number of inactive days in a given period: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong></li>
                 <li>Max posts in a single day: <strong>${ maxTweetsPerDay }</strong></li>
                 <li>Probably planned posts count: <strong>${ probablyPlannedPostsCount } (${ ( ( probablyPlannedPostsCount / data.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) }%)</strong></li>
             </ul>
@@ -117,11 +117,19 @@ export default class PostsFrequencyScanner extends Scanner {
         };
     }
 
-    private _getUserTweetsAPIUrl( id: string, paginationToken?: string ): string {
+    private _getUserTweetsAPIUrl( id: string, paginationToken?: string, timeRange: { startDate?: Date; endDate?: Date; } = {} ): string {
         let queryParams: string = `?max_results=${ MAX_RESULTS_PER_PAGE }&tweet.fields=created_at`;
 
         if ( paginationToken ) {
             queryParams = `${ queryParams }&pagination_token=${ paginationToken }`;
+        }
+
+        if ( timeRange.startDate ) {
+            queryParams = `${ queryParams }&start_time=${ timeRange.startDate.toISOString() }`;
+        }
+
+        if ( timeRange.endDate ) {
+            queryParams = `${ queryParams }&end_time=${ timeRange.endDate.toISOString() }`;
         }
 
         return `https://api.twitter.com/2/users/${ id }/tweets${ queryParams }`;
