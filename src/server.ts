@@ -25,7 +25,7 @@ const port: number = Number( process.env.PORT ) || 3000;
     const scannersFactory: ScannersFactory = new ScannersFactory( browser, httpClient );
 
     const rootController: RootController = new RootController();
-    const profileReportController: ProfileReportController = new ProfileReportController( scannersFactory );
+    const profileReportController: ProfileReportController = new ProfileReportController( scannersFactory, httpClient );
 
     const router: Router = new Router(
         [

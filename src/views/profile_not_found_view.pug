@@ -1,0 +1,23 @@
+html
+    head
+        link(rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700")
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.3/css/bulma.min.css")
+        link(rel="stylesheet" href="style.css")
+    body
+        .wrapper
+          .wrapper__content
+            h1(class="title scanner__header")
+              | Profile #{profile} not found
+            div(class="box")
+              p 
+                | Try to check another profile. Just pass the name and click the <span class="tag is-info is-light">Scan!</span> button
+            form(role="form" action="profile-report" method="POST" id="scanProfile")
+              div(class="field")
+                input(class="input is-medium form__input" id="profile" type="text" placeholder="Scan another profile" name="profile" required)
+              div(class="field form__submit" id="submitContainer")
+                input(id="submitButton" type="submit" value="Scan!" class="button is-link is-medium")
+          footer(class="wrapper__footer")
+            div
+                span
+                  | Created by Dominik Szczepaniak 2022
+    script(src="scripts.js")
