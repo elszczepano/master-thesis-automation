@@ -29,12 +29,14 @@ flowchart BT
         C[Profile Picture Scanner] <---> B
         E[Posts Frequency Scanner] <---> B
         F[User Details Scanner] <---> B
+        G[Emoji Scanner] <---> B
         D[Email Address Scanner] <---> B
         H[darwin.v7labs.com] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
         J[Twitter REST API] <---> C
         J[Twitter REST API] <---> E
         J[Twitter REST API] <---> F
+        J[Twitter REST API] <---> G
     end
 ```
 
