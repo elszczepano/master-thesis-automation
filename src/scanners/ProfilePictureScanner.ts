@@ -21,15 +21,6 @@ interface IDarwinLabsScanResults {
     }[];
 }
 
-interface IGetUserDataResults {
-    data: {
-        name: string;
-        username: string;
-        profile_image_url: string;
-        id: string;
-    }
-}
-
 export default class ProfilePictureScanner extends Scanner {
     protected readonly _scannedElement: string = 'Profile picture scan report';
 
@@ -37,15 +28,8 @@ export default class ProfilePictureScanner extends Scanner {
         super()
     }
 
-    protected async _scan( { profile }: IScannerParams ): Promise<IScannerOutput> {
-        const getUserDataResults: HttpResponse = await this._httpClient.get(
-            `https://api.twitter.com/2/users/by/username/${profile}?user.fields=profile_image_url`,
-            { ...Utils.getTwitterAPIAuthHeaders() }
-        );
-
-        const user: IGetUserDataResults = await getUserDataResults.body.json();
-
-        const profilePictureUrl: string = user.data.profile_image_url.replace( '_normal', '' ); // Get full size image URL.
+    protected async _scan( { user }: IScannerParams ): Promise<IScannerOutput> {
+        const profilePictureUrl: string = user.profile_image_url.replace( '_normal', '' ); // Get full size image URL.
 
         const base64ProfilePicture: string = await this._httpClient.download( profilePictureUrl, { base64: true } ) as string;
 

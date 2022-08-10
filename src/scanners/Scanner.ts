@@ -1,3 +1,4 @@
+import { IUser } from '../controllers/ScanResultController';
 import Utils from '../Utils';
 
 const DEFAULT_WAIT_TASK_TIMEOUT: number = 60 * 1000;
@@ -18,6 +19,7 @@ export interface IScannerOutput {
 
 export interface IScannerParams {
     profile: string;
+    user: IUser
     startDate?: Date;
     endDate?: Date;
 }

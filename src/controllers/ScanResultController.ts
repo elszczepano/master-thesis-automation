@@ -12,6 +12,26 @@ interface IRequestBody {
     endDate: string;
 }
 
+export interface IGetUserDataResults {
+    data: IUser;
+    errors?: Record<string, unknown>;
+}
+
+export interface IUser {
+    description: string;
+    name: string;
+    username: string;
+    profile_image_url: string;
+    id: string;
+    public_metrics: {
+        followers_count: number;
+        following_count: number;
+        tweet_count: number;
+        listed_count: number;
+    };
+    created_at: string;
+}
+
 export default class ScanResultController implements IController {
     public constructor(
         private readonly _scannersFactory: ScannersFactory,
@@ -30,9 +50,9 @@ export default class ScanResultController implements IController {
             return;
         }
 
-        const exists: boolean = await this._checkProfileExistence( profile );
+        const { errors, data } = await this._getUserProfile( profile );
 
-        if ( !exists ) {
+        if ( errors ) {
             response.render( 'profile_not_found_view', { profile, reason: 'Profile not found.' } );
 
             return;
@@ -40,20 +60,22 @@ export default class ScanResultController implements IController {
 
         const scanners: IScanner[] = this._scannersFactory.scanners;
 
-        const results: IScannerReport[] = await Promise.all( scanners.map( scanner => scanner.scan( { profile, startDate, endDate } ) ) );
+        const results: IScannerReport[] = await Promise.all(
+            scanners.map( scanner => scanner.scan( { profile, startDate, endDate, user: data } ) )
+        );
 
         response.render( 'profile_report_view', { profile, results } );
     }
 
-    private async _checkProfileExistence( profile: string ): Promise<boolean> {
+    private async _getUserProfile( profile: string ): Promise<IGetUserDataResults> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
-            `https://api.twitter.com/2/users/by/username/${ profile }`,
+            `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,description,name,public_metrics,profile_image_url`,
             { ...Utils.getTwitterAPIAuthHeaders() }
         );
 
-        const responseBody: Record<string, unknown> = await getUserDataResults.body.json();
+        const { data, errors }: IGetUserDataResults = await getUserDataResults.body.json();
 
-        return !responseBody.errors;
+        return { data, errors };
     }
 
     private _isValidTimeRange( startDate?: Date, endDate?: Date ): boolean {

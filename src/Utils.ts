@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const DAY_LENGTH: number = 1000 * 60 * 60 * 24;
+const MAX_RESULTS_PER_PAGE: number = 50;
 
 export default class Utils {
     public static wait( ms: number ): Promise<void> {
@@ -29,5 +30,27 @@ export default class Utils {
         const diffTime: number = Math.abs( date2.getTime() - date1.getTime() );
 
         return Math.ceil( diffTime / ( DAY_LENGTH ) );
+    }
+
+    public static getUserTweetsAPIUrl(
+        id: string,
+        paginationToken?: string,
+        timeRange: { startDate?: Date; endDate?: Date; } = {}
+    ): string {
+        let queryParams: string = `?max_results=${ MAX_RESULTS_PER_PAGE }&tweet.fields=created_at`;
+
+        if ( paginationToken ) {
+            queryParams = `${ queryParams }&pagination_token=${ paginationToken }`;
+        }
+
+        if ( timeRange.startDate ) {
+            queryParams = `${ queryParams }&start_time=${ timeRange.startDate.toISOString() }`;
+        }
+
+        if ( timeRange.endDate ) {
+            queryParams = `${ queryParams }&end_time=${ timeRange.endDate.toISOString() }`;
+        }
+
+        return `https://api.twitter.com/2/users/${ id }/tweets${ queryParams }`;
     }
 }

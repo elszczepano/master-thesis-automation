@@ -17,6 +17,7 @@ The application is an automation prepared for Master thesis research and experim
   * A total number of inactive days
   * Max number of posts in a single day
   * Number of posts probably created via planner - if a post is created via planner then the number of seconds and milliseconds in the timestamp equals 0.
+* Used emojis report.
 
 ## Application flow diagram
 
