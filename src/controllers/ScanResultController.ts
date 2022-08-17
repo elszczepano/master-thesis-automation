@@ -85,6 +85,10 @@ export default class ScanResultController implements IController {
             return false;
         }
 
+        if ( endDate && endDate > now ) {
+            return false;
+        }
+
         if ( startDate && endDate && startDate > endDate ) {
             return false;
         }
