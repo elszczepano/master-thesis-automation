@@ -38,7 +38,7 @@ export default class EmojiScanner extends Scanner {
 
         // Get only the most frequently used emojis
         for ( const [ emoji, frequency ] of Object.entries( emojisFrequency ).slice( 0, EMOJIS_FREQUENCY_LIMIT ) ) {
-            value += `<li>${ emoji } (${ frequency } occurrences)</li>`;
+            value += `<li>${ emoji } (${ frequency } ${ frequency == 1 ? 'occurrence' : 'occurrences' })</li>`;
         }
 
         value = value + '</ul>';

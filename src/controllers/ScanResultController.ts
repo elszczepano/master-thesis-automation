@@ -76,10 +76,8 @@ export default class ScanResultController implements IController {
 
         const tweets: ITweet[] = await this._getUserTweets( { startDate, endDate, user } );
 
-        const scanners: IScanner[] = this._scannersFactory.scanners;
-
         const results: IScannerReport[] = await Promise.all(
-            scanners.map( scanner => scanner.scan( { startDate, endDate, user, tweets } ) )
+            this._scannersFactory.scanners.map( scanner => scanner.scan( { startDate, endDate, user, tweets } ) )
         );
 
         response.render( 'profile_report_view', { profile, results } );

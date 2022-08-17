@@ -15,6 +15,7 @@ export interface IScannerReport extends IScannerOutput {
 export interface IScannerOutput {
     value: string;
     explanation: string;
+    additionalData?: Record<string, unknown>;
 }
 
 export interface IScannerParams {
