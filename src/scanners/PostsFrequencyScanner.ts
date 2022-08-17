@@ -9,11 +9,10 @@ export default class PostsFrequencyScanner extends Scanner {
     }
 
     protected async _scan( { user, tweets }: IScannerParams ): Promise<IScannerOutput> {
-        const postsFrequencyMap: Map<string, number> = new Map();
         let probablyPlannedPostsCount: number = 0;
-        let lastActivityAt: Date = new Date( user.created_at );
-        
-        lastActivityAt = tweets.length ? new Date( tweets[ tweets.length - 1 ].created_at ) : lastActivityAt;
+
+        const postsFrequencyMap: Map<string, number> = new Map();
+        const lastActivityAt: Date = tweets.length ? new Date( tweets[ tweets.length - 1 ].created_at ) : new Date( user.created_at );
 
         tweets.map( tweet => {
             const tweetDay: string = tweet.created_at.split( 'T' )[ 0 ];
