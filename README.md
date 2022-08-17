@@ -30,6 +30,7 @@ flowchart BT
         E[Posts Frequency Scanner] <---> B
         F[User Details Scanner] <---> B
         G[Emoji Scanner] <---> B
+        K[Daily Frequency Posts Scanner]  <---> B
         D[Email Address Scanner] <---> B
         H[darwin.v7labs.com] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
@@ -37,6 +38,7 @@ flowchart BT
         J[Twitter REST API] <---> E
         J[Twitter REST API] <---> F
         J[Twitter REST API] <---> G
+        J[Twitter REST API] <---> K
     end
 ```
 
