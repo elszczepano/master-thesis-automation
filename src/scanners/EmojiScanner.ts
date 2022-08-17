@@ -1,4 +1,4 @@
-import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
 
 const EMOJIS_FREQUENCY_LIMIT: number = 20;
 

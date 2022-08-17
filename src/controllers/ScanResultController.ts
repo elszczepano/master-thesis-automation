@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
-import ScannersFactory from '../scanners/ScannerFactory';
-import { IScanner, IScannerReport } from '../scanners/Scanner';
+import ScannersFactory from '../scanners/base/ScannerFactory';
+import { IScanner, IScannerReport } from '../scanners/base/Scanner';
 import { IController } from './Controller';
 import { IHttpClient, HttpResponse } from '../HttpClient';
 import Utils from '../Utils';

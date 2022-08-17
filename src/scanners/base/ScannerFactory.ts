@@ -1,13 +1,13 @@
 import { Browser } from 'puppeteer';
 
-import HttpClient from '../HttpClient';
-import EmailAddressScanner from './EmailAddressScanner';
-import ProfilePictureScanner from './ProfilePictureScanner';
-import UserDetailsScanner from './UserDetailsScanner';
-import EmojiScanner from './EmojiScanner';
+import HttpClient from '../../HttpClient';
+import EmailAddressScanner from '../EmailAddressScanner';
+import ProfilePictureScanner from '../ProfilePictureScanner';
+import UserDetailsScanner from '../UserDetailsScanner';
+import EmojiScanner from '../EmojiScanner';
 
 import { IScanner } from './Scanner';
-import PostsFrequencyScanner from './PostsFrequencyScanner';
+import PostsFrequencyScanner from '../PostsFrequencyScanner';
 
 export default class ScannersFactory {
     private readonly _scanners: IScanner[] = [];

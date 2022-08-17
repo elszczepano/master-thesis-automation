@@ -1,6 +1,6 @@
 import { Browser, Page } from 'puppeteer';
 
-import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
 
 export default class EmailAddressScanner extends Scanner {
     protected readonly _scannedElement: string = 'Email address';

@@ -1,5 +1,5 @@
 import { IHttpClient, HttpResponse } from '../HttpClient';
-import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
 import Utils from '../Utils';
 
 const SCANNER_URL = 'https://darwin.v7labs.com/ai/models/0e322ea6-3c51-4168-8a20-b25d0860664f/infer';

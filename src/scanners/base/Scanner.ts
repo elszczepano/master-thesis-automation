@@ -1,5 +1,5 @@
-import { IUser, ITweet } from '../controllers/ScanResultController';
-import Utils from '../Utils';
+import { IUser, ITweet } from '../../controllers/ScanResultController';
+import Utils from '../../Utils';
 
 const DEFAULT_WAIT_TASK_TIMEOUT: number = 60 * 1000;
 const INVALID_SCAN_PLACEHOLDER: string = 'N/A';

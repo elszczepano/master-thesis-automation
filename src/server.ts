@@ -7,7 +7,7 @@ import ScanResultController from './controllers/ScanResultController';
 import { Browser } from 'puppeteer';
 import BrowserWorker from './BrowserWorker';
 import HttpClient from './HttpClient';
-import ScannersFactory from './scanners/ScannerFactory';
+import ScannersFactory from './scanners/base/ScannerFactory';
 
 dotenv.config();
 

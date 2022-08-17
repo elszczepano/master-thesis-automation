@@ -1,4 +1,4 @@
-import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
+import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
 import Utils from '../Utils';
 
 export default class PostsFrequencyScanner extends Scanner {
