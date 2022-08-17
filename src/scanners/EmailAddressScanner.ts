@@ -9,7 +9,7 @@ export default class EmailAddressScanner extends Scanner {
         super() 
     }
 
-    protected async _scan( { profile }: IScannerParams ): Promise<IScannerOutput> {
+    protected async _scan( { user }: IScannerParams ): Promise<IScannerOutput> {
         const page: Page = await this._browser.newPage();
 
         // Pretend that we do not use a headless browser
@@ -27,7 +27,7 @@ export default class EmailAddressScanner extends Scanner {
 
         // Fill the reset password form
         await page.waitForSelector( resetPasswordInputField );
-        await page.type( resetPasswordInputField, profile );
+        await page.type( resetPasswordInputField, user.username );
         await page.click( resetPasswordButton );
 
         // Wait for page load

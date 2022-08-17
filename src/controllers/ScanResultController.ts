@@ -13,7 +13,7 @@ interface IRequestBody {
 }
 
 export interface IGetUserDataResults {
-    data: IUser;
+    user: IUser;
     errors?: Record<string, unknown>;
 }
 
@@ -30,6 +30,22 @@ export interface IUser {
         listed_count: number;
     };
     created_at: string;
+}
+
+export interface ITweet {
+    id: string;
+    text: string;
+    created_at: string;
+}
+
+interface IGetUserTweetsResults {
+    data: ITweet[];
+    meta: {
+        next_token?: string;
+        result_count: number;
+        newest_id: string;
+        oldest_id: string;
+    }
 }
 
 export default class ScanResultController implements IController {
@@ -50,7 +66,7 @@ export default class ScanResultController implements IController {
             return;
         }
 
-        const { errors, data } = await this._getUserProfile( profile );
+        const { errors, user } = await this._getUserProfile( profile );
 
         if ( errors ) {
             response.render( 'profile_not_found_view', { profile, reason: 'Profile not found.' } );
@@ -58,10 +74,12 @@ export default class ScanResultController implements IController {
             return;
         }
 
+        const tweets: ITweet[] = await this._getUserTweets( { startDate, endDate, user } );
+
         const scanners: IScanner[] = this._scannersFactory.scanners;
 
         const results: IScannerReport[] = await Promise.all(
-            scanners.map( scanner => scanner.scan( { profile, startDate, endDate, user: data } ) )
+            scanners.map( scanner => scanner.scan( { startDate, endDate, user, tweets } ) )
         );
 
         response.render( 'profile_report_view', { profile, results } );
@@ -73,9 +91,9 @@ export default class ScanResultController implements IController {
             { ...Utils.getTwitterAPIAuthHeaders() }
         );
 
-        const { data, errors }: IGetUserDataResults = await getUserDataResults.body.json();
+        const { data: user, errors }: { data: IUser; errors?: Record<string, unknown>; } = await getUserDataResults.body.json();
 
-        return { data, errors };
+        return { user, errors };
     }
 
     private _isValidTimeRange( startDate?: Date, endDate?: Date ): boolean {
@@ -94,5 +112,33 @@ export default class ScanResultController implements IController {
         }
 
         return true;
+    }
+
+    private async _getUserTweets( params: { startDate?: Date, endDate?: Date, user: IUser } ): Promise<ITweet[]> {
+        const { startDate, endDate, user } = params;
+
+        let userTweets: ITweet[] = [];
+
+        let paginationToken: string | undefined = '';
+
+        while ( paginationToken !== undefined ) {
+            const getUserTweetsResults: HttpResponse = await this._httpClient.get(
+                Utils.getUserTweetsAPIUrl( user.id, paginationToken, { startDate, endDate } ),
+                { ...Utils.getTwitterAPIAuthHeaders() }
+            );
+
+            const { meta, data: tweets } = await getUserTweetsResults.body.json() as IGetUserTweetsResults;
+
+            if ( !tweets?.length ) {
+                // Handle a situation when e.g. a rate limit is reached or the profile is empty.
+                break;
+            }
+
+            userTweets = [ ...userTweets, ...tweets ];
+
+            paginationToken = meta.next_token;
+        }
+
+        return userTweets;
     }
 }

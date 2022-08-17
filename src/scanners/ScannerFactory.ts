@@ -16,8 +16,8 @@ export default class ScannersFactory {
         const emailAddressScanner: EmailAddressScanner = new EmailAddressScanner( browser );
         const profilePictureScanner: ProfilePictureScanner = new ProfilePictureScanner( httpClient );
         const userDetailsScanner: UserDetailsScanner = new UserDetailsScanner();
-        const postsFrequencyScanner: PostsFrequencyScanner = new PostsFrequencyScanner( httpClient );
-        const emojiScanner: EmojiScanner = new EmojiScanner( httpClient );
+        const postsFrequencyScanner: PostsFrequencyScanner = new PostsFrequencyScanner();
+        const emojiScanner: EmojiScanner = new EmojiScanner();
 
         this._scanners.push( userDetailsScanner );
         this._scanners.push( postsFrequencyScanner );

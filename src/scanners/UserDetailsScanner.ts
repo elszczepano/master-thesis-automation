@@ -1,8 +1,5 @@
-import { IHttpClient, HttpResponse } from '../HttpClient';
 import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
 import Utils from '../Utils';
-
-
 
 export default class UserDetailsScanner extends Scanner {
     protected readonly _scannedElement: string = 'User details';

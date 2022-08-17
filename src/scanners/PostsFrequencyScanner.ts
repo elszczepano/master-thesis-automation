@@ -1,68 +1,32 @@
-import { IHttpClient, HttpResponse } from '../HttpClient';
 import Scanner, { IScannerOutput, IScannerParams } from './Scanner';
 import Utils from '../Utils';
-
-interface ITweet {
-    id: string;
-    text: string;
-    created_at: string;
-}
-
-interface IGetUserTweetsResults {
-    data: ITweet[];
-    meta: {
-        next_token?: string;
-        result_count: number;
-        newest_id: string;
-        oldest_id: string;
-    }
-}
 
 export default class PostsFrequencyScanner extends Scanner {
     protected readonly _scannedElement: string = 'Posts frequency';
 
-    public constructor( private readonly _httpClient: IHttpClient ) {
+    public constructor() {
         super()
     }
 
-    protected async _scan( { startDate, endDate, user }: IScannerParams ): Promise<IScannerOutput> {
-        let paginationToken: string | undefined = '';
+    protected async _scan( { user, tweets }: IScannerParams ): Promise<IScannerOutput> {
         const postsFrequencyMap: Map<string, number> = new Map();
         let probablyPlannedPostsCount: number = 0;
         let lastActivityAt: Date = new Date( user.created_at );
         
-        while ( paginationToken !== undefined ) {
-            const getUserTweetsResults: HttpResponse = await this._httpClient.get(
-                Utils.getUserTweetsAPIUrl( user.id, paginationToken, { startDate, endDate } ),
-                { ...Utils.getTwitterAPIAuthHeaders() }
-            );
+        lastActivityAt = tweets.length ? new Date( tweets[ tweets.length - 1 ].created_at ) : lastActivityAt;
 
-            const { meta, data: tweets } = await getUserTweetsResults.body.json() as IGetUserTweetsResults;
+        tweets.map( tweet => {
+            const tweetDay: string = tweet.created_at.split( 'T' )[ 0 ];
+            const tweetDate: Date = new Date( tweet.created_at );
+            const currentFrequency: number = postsFrequencyMap.get( tweetDay ) ?? 0;
 
-            if ( !tweets?.length ) {
-                // Handle a situation when e.g. a rate limit is reached or the profile is empty.
-                break;
+            // Planner does not allow to set seconds and milliseconds for a scheduled tweet.
+            if ( !tweetDate.getSeconds() && !tweetDate.getMilliseconds() ) {
+                probablyPlannedPostsCount++;
             }
 
-            if ( paginationToken === '' ) {
-                lastActivityAt = new Date( tweets[ 0 ].created_at );
-            }
-
-            tweets.map( tweet => {
-                const tweetDay: string = tweet.created_at.split('T')[ 0 ];
-                const tweetDate: Date = new Date( tweet.created_at );
-                const currentFrequency: number = postsFrequencyMap.get( tweetDay ) ?? 0;
-                
-                // Planner does not allow to set seconds and milliseconds for a scheduled tweet.
-                if ( !tweetDate.getSeconds() && !tweetDate.getMilliseconds() ) {
-                    probablyPlannedPostsCount++;
-                }
-
-                postsFrequencyMap.set( tweetDay, currentFrequency + 1 );
-            } );
-
-            paginationToken = meta.next_token;
-        }
+            postsFrequencyMap.set( tweetDay, currentFrequency + 1 );
+        } );
 
         const frequencies: number[] = [ ...postsFrequencyMap.values() ];
 
