@@ -23,7 +23,6 @@ export default class UserDetailsScanner extends Scanner {
                 <li>Followers count: <strong>${ user.public_metrics.followers_count }</strong></li>
                 <li>Following count: <strong>${ user.public_metrics.following_count }</strong></li>
                 <li>Tweets count: <strong>${ user.public_metrics.tweet_count }</strong></li>
-                <li>Listed count: <strong>${ user.public_metrics.listed_count }</strong></li>
             </ul>
             `,
             explanation: 'Basic metrics from the scanned Twitter profile.'
