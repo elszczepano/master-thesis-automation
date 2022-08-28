@@ -32,7 +32,7 @@ flowchart BT
         G[Emoji Scanner] <---> B
         K[Daily Frequency Posts Scanner]  <---> B
         D[Email Address Scanner] <---> B
-        H[darwin.v7labs.com] <---> C
+        H[V7 Labs] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
         J[Twitter REST API] <---> C
         J[Twitter REST API] <---> E

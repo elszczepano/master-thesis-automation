@@ -4,7 +4,7 @@ import Utils from '../Utils';
 
 const SCANNER_URL = 'https://darwin.v7labs.com/ai/models/0e322ea6-3c51-4168-8a20-b25d0860664f/infer';
 
-interface IDarwinLabsScanResults {
+interface IV7LabsScanResults {
     action: string;
     result: {
         inference: {
@@ -41,12 +41,12 @@ export default class ProfilePictureScanner extends Scanner {
                 }
             },
             {
-                authorization: Utils.getDarwinLabsAPIKey(),
+                authorization: Utils.getV7LabsAPIKey(),
                 'content-type': 'application/json'
             }
         );
 
-        const response: IDarwinLabsScanResults = await profilePictureScanResult.body.json();
+        const response: IV7LabsScanResults = await profilePictureScanResult.body.json();
 
         const fakePercentage: string = `${ Math.round( response.result[ 0 ].inference.confidence * 100 ) }%`;
 

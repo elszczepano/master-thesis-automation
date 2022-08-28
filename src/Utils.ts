@@ -18,8 +18,8 @@ export default class Utils {
         }
     }
 
-    public static getDarwinLabsAPIKey(): string {
-        return `ApiKey ${ process.env.DARWIN_LABS_API_KEY }`;
+    public static getV7LabsAPIKey(): string {
+        return `ApiKey ${ process.env.V7_LABS_API_KEY }`;
     }
 
     public static getAverageValue( numbers: number[] ): number {
