@@ -53,4 +53,20 @@ export default class Utils {
 
         return `https://api.twitter.com/2/users/${ id }/tweets${ queryParams }`;
     }
+
+    public static sortByFrequency( frequencies: Record<string, number> ): Record<string, number> {
+        return Object.entries( frequencies )
+            .sort( ( [ , a ], [ , b ] ) => b - a )
+            .reduce( ( r, [ k, v ] ) => ( { ...r, [ k ]: v } ), {} );
+    }
+
+    public static countFrequency( strings: string[] ): Record<string, number> {
+        return strings.reduce(
+            ( acc: Record<string, number>, curr: string ) => {
+                acc[ curr ] = -~acc[ curr ];
+                return acc;
+            },
+            {}
+        );
+    }
 }

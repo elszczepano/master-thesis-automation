@@ -1,4 +1,5 @@
 import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
+import Utils from '../Utils';
 
 const EMOJIS_FREQUENCY_LIMIT: number = 20;
 
@@ -25,7 +26,7 @@ export default class EmojiScanner extends Scanner {
             emojis = [ ...emojis, ...currentTweetEmojis ];
         } );
 
-        const emojisFrequency: Record<string, number> = this._sortByFrequency( this._countEmojiFrequency( emojis ) );
+        const emojisFrequency: Record<string, number> = Utils.sortByFrequency( Utils.countFrequency( emojis ) );
 
         if ( !Object.keys( emojisFrequency ).length ) {
             return {
@@ -47,21 +48,5 @@ export default class EmojiScanner extends Scanner {
             value,
             explanation: `Returns used emojis with the number of occurrences in an descending order (up to ${ EMOJIS_FREQUENCY_LIMIT } most frequent emojis).`
         };
-    }
-
-    private _countEmojiFrequency( emojis: string[] ): Record<string, number> {
-        return emojis.reduce(
-            ( acc: Record<string,number>, curr: string ) => {
-                acc[ curr ] = -~acc[ curr ];
-                return acc;
-            },
-            {}
-        );
-    }
-
-    private _sortByFrequency( emojisFrequency: Record<string, number> ): Record<string, number> {
-        return Object.entries( emojisFrequency )
-            .sort( ( [ , a ], [ , b ] ) => b - a )
-            .reduce( ( r, [ k, v ] ) => ( { ...r, [ k ]: v } ), {} );
     }
 }
