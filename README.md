@@ -33,6 +33,7 @@ flowchart BT
         K[Daily Frequency Posts Scanner]  <---> B
         L[Mentions Scanner]  <---> B
         D[Email Address Scanner] <---> B
+        M[MongoDB] <--- B
         H[V7 Labs] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
         J[Twitter REST API] <---> C
