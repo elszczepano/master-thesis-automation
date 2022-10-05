@@ -25,7 +25,12 @@ export default class UserDetailsScanner extends Scanner {
                 <li>Tweets count: <strong>${ user.public_metrics.tweet_count }</strong></li>
             </ul>
             `,
-            explanation: 'Basic metrics from the scanned Twitter profile.'
+            explanation: 'Basic metrics from the scanned Twitter profile.',
+            dataToSave: {
+                tweetsCount: user.public_metrics.tweet_count,
+                followersCount: user.public_metrics.followers_count,
+                followingCount: user.public_metrics.following_count
+            }
         };
     }
 }

@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 
 import ScannersFactory from '../scanners/base/ScannerFactory';
-import { IScanner, IScannerReport } from '../scanners/base/Scanner';
+import { IScannerReport } from '../scanners/base/Scanner';
 import { IController } from './Controller';
 import { IHttpClient, HttpResponse } from '../HttpClient';
 import Utils from '../Utils';
+import ReportsModel, { IReport } from '../models/ReportsModel';
 
 interface IRequestBody {
     profile: string;
@@ -51,7 +52,8 @@ interface IGetUserTweetsResults {
 export default class ScanResultController implements IController {
     public constructor(
         private readonly _scannersFactory: ScannersFactory,
-        private readonly _httpClient: IHttpClient
+        private readonly _httpClient: IHttpClient,
+        private readonly _reportsModel: ReportsModel
     ) {}
 
     public async execute( request: Request, response: Response ): Promise<void> {
@@ -79,6 +81,17 @@ export default class ScanResultController implements IController {
         const results: IScannerReport[] = await Promise.all(
             this._scannersFactory.scanners.map( scanner => scanner.scan( { startDate, endDate, user, tweets } ) )
         );
+
+        const dataToSave: Partial<IReport> = results.reduce( ( prev, curr ) => {
+            return { ...prev, ...curr.dataToSave ?? {} };
+        }, {} );
+
+        await this._reportsModel.save( {
+            _id: user.username,
+            tweets,
+            lastScanAt: new Date(),
+            ...dataToSave
+        } );
 
         response.render( 'profile_report_view', { profile, results } );
     }

@@ -1,5 +1,6 @@
 import { IUser, ITweet } from '../../controllers/ScanResultController';
 import Utils from '../../Utils';
+import { IReport } from '../../models/ReportsModel';
 
 const DEFAULT_WAIT_TASK_TIMEOUT: number = 60 * 1000;
 const INVALID_SCAN_PLACEHOLDER: string = 'N/A';
@@ -15,7 +16,7 @@ export interface IScannerReport extends IScannerOutput {
 export interface IScannerOutput {
     value: string;
     explanation: string;
-    additionalData?: Record<string, unknown>;
+    dataToSave?: Partial<IReport>;
 }
 
 export interface IScannerParams {

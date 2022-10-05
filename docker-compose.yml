@@ -6,21 +6,19 @@ services:
     restart: always
     ports:
       - "3000:3000"
-  db:
-    image: mysql:8.0.30
-    command: --default-authentication-plugin=mysql_native_password
-    container_name: db
-    ports:
-      - "3306:3306"
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:6.0.2
     restart: always
-    env_file: .env
+    ports:
+      - 27017:27017
+    volumes:
+      - $PWD/mongodb/:/docker-entrypoint-initdb.d
     environment:
-      - MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD
-      - MYSQL_USER=$MYSQL_USER
-      - MYSQL_PASSWORD=$MYSQL_PASSWORD
-      - MYSQL_DATABASE=$MYSQL_DATABASE
-    networks:
-      - app-network
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE=twitter-scanner
 networks:
   app-network:
     driver: bridge
