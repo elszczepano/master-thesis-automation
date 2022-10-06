@@ -86,12 +86,15 @@ export default class ScanResultController implements IController {
             return { ...prev, ...curr.dataToSave ?? {} };
         }, {} );
 
-        await this._reportsModel.save( {
-            _id: user.username,
-            tweets,
-            lastScanAt: new Date(),
-            ...dataToSave
-        } );
+        await this._reportsModel.queryable.updateOne(
+            { _id: user.username },
+            {
+                tweets,
+                lastScanAt: new Date(),
+                ...dataToSave
+            },
+            { upsert: true }
+        );
 
         response.render( 'profile_report_view', { profile, results } );
     }

@@ -38,6 +38,10 @@ export default class ReportsModel {
         this._ReportModel = driver.model<IReport>( 'Report', reportsSchema );
     }
 
+    public get queryable(): Model<IReport> {
+        return this._ReportModel;
+    }
+
     public async save( data: Partial<IReport> ): Promise<void> {
         const report: Document = new this._ReportModel( data );
 

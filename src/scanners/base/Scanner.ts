@@ -43,11 +43,7 @@ export default abstract class Scanner implements IScanner {
             ] );
 
             if ( result ) {
-                return {
-                    element: this._scannedElement,
-                    value: result.value,
-                    explanation: result.explanation
-                };
+                return { element: this._scannedElement, ...result };
             }
 
             return {
