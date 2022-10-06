@@ -24,6 +24,9 @@ html
                     td !{result.element}
                     td !{result.value}
                     td !{result.explanation}
+            div(class="field form__submit" id="submitContainer")
+              a(class="button is-link is-medium" href="/download-report/" + profile)
+                |Download account data
             form(role="form" action="scan-result" method="POST" id="scanProfile")
               div(class="field")
                 label(class="label" for="profile")

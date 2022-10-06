@@ -63,7 +63,7 @@ export default class ScanResultController implements IController {
         const endDate: Date | undefined = end ? new Date( end ) : undefined;
 
         if ( !this._isValidTimeRange( startDate, endDate ) ) {
-            response.render( 'profile_not_found_view', { profile, reason: 'Invalid time range.' } );
+            response.render( 'action_failed', { profile, reason: 'Invalid time range.' } );
 
             return;
         }
@@ -71,7 +71,7 @@ export default class ScanResultController implements IController {
         const { errors, user } = await this._getUserProfile( profile );
 
         if ( errors ) {
-            response.render( 'profile_not_found_view', { profile, reason: 'Profile not found.' } );
+            response.render( 'action_failed', { profile, reason: 'Profile not found.' } );
 
             return;
         }
@@ -86,14 +86,13 @@ export default class ScanResultController implements IController {
             return { ...prev, ...curr.dataToSave ?? {} };
         }, {} );
 
-        await this._reportsModel.queryable.updateOne(
-            { _id: user.username },
+        await this._reportsModel.save( 
+            user.username,
             {
                 tweets,
                 lastScanAt: new Date(),
                 ...dataToSave
-            },
-            { upsert: true }
+            }
         );
 
         response.render( 'profile_report_view', { profile, results } );

@@ -1,4 +1,4 @@
-import { Schema, Mongoose, Model, Document } from 'mongoose';
+import { Schema, Mongoose, Model } from 'mongoose';
 
 export interface IReport {
     _id: string;
@@ -42,9 +42,11 @@ export default class ReportsModel {
         return this._ReportModel;
     }
 
-    public async save( data: Partial<IReport> ): Promise<void> {
-        const report: Document = new this._ReportModel( data );
+    public async save( username: string, data: Partial<IReport> ): Promise<void> {
+        await this._ReportModel.updateOne( { _id: username }, { ...data }, { upsert: true } );
+    }
 
-        await report.save();
+    public async findByUsername( username: string ): Promise<IReport | null> {
+        return this._ReportModel.findOne( { _id: username } );
     }
 }

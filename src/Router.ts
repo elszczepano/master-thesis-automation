@@ -18,7 +18,7 @@ export default class Router {
         this._router = ExpressRouter();
 
         for ( const { method, path, controller } of routes ) {
-            if ( ['put', 'post' ].includes( method ) ) {
+            if ( ['put', 'post',  ].includes( method ) ) {
                 this._router[ method ](
                     path,
                     bodyParser.urlencoded( { extended: false } ),
@@ -28,7 +28,7 @@ export default class Router {
                 continue;
             }
 
-            this._router[ method ]( path, controller.execute );
+            this._router[ method ]( path, controller.execute.bind( controller ) );
         }
     }
 
