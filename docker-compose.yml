@@ -15,6 +15,7 @@ services:
       - 27017:27017
     volumes:
       - $PWD/mongodb/:/docker-entrypoint-initdb.d
+      - $PWD/dbdata:/data/db
     environment:
       - MONGO_INITDB_ROOT_USERNAME=$MONGO_INITDB_ROOT_USERNAME
       - MONGO_INITDB_ROOT_PASSWORD=$MONGO_INITDB_ROOT_PASSWORD
