@@ -2,6 +2,7 @@ import { Browser } from 'puppeteer';
 
 import HttpClient from '../../HttpClient';
 import { IScanner } from './Scanner';
+import ReportsModel from '../../models/ReportsModel';
 
 import EmailAddressScanner from '../EmailAddressScanner';
 import ProfilePictureScanner from '../ProfilePictureScanner';
@@ -15,11 +16,15 @@ import MentionsScanner from '../MentionsScanner';
 export default class ScannersFactory {
     private readonly _scanners: IScanner[] = [];
 
-    public constructor( browser: Browser, httpClient: HttpClient ) {
+    public constructor(
+        browser: Browser,
+        httpClient: HttpClient,
+        reportsModel: ReportsModel
+    ) {
         const emailAddressScanner: EmailAddressScanner = new EmailAddressScanner( browser );
         const profilePictureScanner: ProfilePictureScanner = new ProfilePictureScanner( httpClient );
-        const userDetailsScanner: UserDetailsScanner = new UserDetailsScanner();
-        const postsFrequencyScanner: PostsFrequencyScanner = new PostsFrequencyScanner();
+        const userDetailsScanner: UserDetailsScanner = new UserDetailsScanner( reportsModel );
+        const postsFrequencyScanner: PostsFrequencyScanner = new PostsFrequencyScanner( reportsModel );
         const emojiScanner: EmojiScanner = new EmojiScanner();
         const hashtagScanner: HashtagScanner = new HashtagScanner();
         const mentionScanner: MentionsScanner = new MentionsScanner();

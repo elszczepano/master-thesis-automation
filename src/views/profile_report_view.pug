@@ -9,6 +9,8 @@ html
             h1(class="title scanner__header")
               | Report for 
               a(target="_blank" href="https://twitter.com/" + profile) #{profile}
+            p
+              | Report has been compared to <strong>#{documentsCount}</strong> reports in the database.
             table(class="table scanner_results")
               thead
                 tr 
@@ -24,9 +26,9 @@ html
                     td !{result.element}
                     td !{result.value}
                     td !{result.explanation}
-            div(class="field form__submit" id="submitContainer")
+            div(class="field download_button_field")
               a(class="button is-link is-medium" href="/download-report/" + profile)
-                |Download account data
+                | Download account data
             form(role="form" action="scan-result" method="POST" id="scanProfile")
               div(class="field")
                 label(class="label" for="profile")

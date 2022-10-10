@@ -1,10 +1,11 @@
 import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
+import ReportsModel, { IReportsStatistics } from '../models/ReportsModel';
 import Utils from '../Utils';
 
 export default class UserDetailsScanner extends Scanner {
     protected readonly _scannedElement: string = 'User details';
 
-    public constructor() {
+    public constructor( private readonly _reportsModel: ReportsModel ) {
         super()
     }
 
@@ -12,6 +13,8 @@ export default class UserDetailsScanner extends Scanner {
         const createdAt: Date = new Date( user.created_at );
 
         const profileLifetime: number = Utils.getDaysDiff( new Date(), createdAt );
+
+        const { followersCount, followingCount, tweetsCount }: IReportsStatistics = await this._reportsModel.getStatistics();
 
         return {
             value: `
@@ -25,7 +28,15 @@ export default class UserDetailsScanner extends Scanner {
                 <li>Tweets count: <strong>${ user.public_metrics.tweet_count }</strong></li>
             </ul>
             `,
-            explanation: 'Basic metrics from the scanned Twitter profile.',
+            explanation: `
+                <p>Basic metrics from the scanned Twitter profile.<p>
+                <p>Statistics for already scanned profiles:</p>
+                <ul class="user_details__list">
+                    <li>Followers count: <strong>${ Math.round( followersCount ) }</strong></li>
+                    <li>Following count: <strong>${ Math.round( followingCount ) }</strong></li>
+                    <li>Tweets count: <strong>${  Math.round( tweetsCount ) }</strong></li>
+                </ul>
+            `,
             dataToSave: {
                 tweetsCount: user.public_metrics.tweet_count,
                 followersCount: user.public_metrics.followers_count,

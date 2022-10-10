@@ -1,10 +1,11 @@
 import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
+import ReportsModel, { IReportsStatistics } from '../models/ReportsModel';
 import Utils from '../Utils';
 
 export default class PostsFrequencyScanner extends Scanner {
     protected readonly _scannedElement: string = 'Posts frequency';
 
-    public constructor() {
+    public constructor( private readonly _reportsModel: ReportsModel ) {
         super()
     }
 
@@ -33,14 +34,16 @@ export default class PostsFrequencyScanner extends Scanner {
         const averageTweetsPerDay: number = frequencies.length ? Utils.getAverageValue( [ ...frequencies ] ): 0;
         const createdAt: Date = new Date( user.created_at );
         const profileLifetime: number = Utils.getDaysDiff( new Date(), createdAt );
-        const averageTweetsPerDayOverall: number = user.public_metrics.tweet_count / profileLifetime
+        const averageTweetsPerDayOverall: number = user.public_metrics.tweet_count / profileLifetime;
+
+        const statistics: IReportsStatistics = await this._reportsModel.getStatistics();
 
         return {
             value: `
             <ul class="details__list">
                 <li>Last activity at: <strong>${ lastActivityAt.toISOString() }</strong></li>
                 <li>Average number of posts in active days: <strong>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
-                <li>Average number of posts overall: <strong>${ ( averageTweetsPerDayOverall ).toFixed( 2 ) }</strong> (incl. inactive days)</li>
+                <li>Average number of posts overall: <strong>${ averageTweetsPerDayOverall.toFixed( 2 ) }</strong> (incl. inactive days)</li>
                 <li>Number of inactive days in a given period: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong></li>
                 <li>Max posts in a single day: <strong>${ maxTweetsPerDay }</strong></li>
                 <li>Probably planned posts count: <strong>${ probablyPlannedPostsCount } (${ ( ( probablyPlannedPostsCount / user.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) }%)</strong></li>
@@ -51,6 +54,13 @@ export default class PostsFrequencyScanner extends Scanner {
                 If overage average value is significantly different from average value from active days it may be an indicate that an account
                 have a large peaks of activity with a long idle time between.<br>
                 Probably planned posts count is a percentage ratio of posts <strong>PROBABLY</strong> planned via the posts planner.
+                <p>Statistics for already scanned profiles:</p>
+                <ul class="user_details__list">
+                    <li>Average number of posts in active days: <strong>${ statistics.averageTweetsPerDayActiveDays.toFixed( 2 ) }</strong></li>
+                    <li>Average number of posts overall: <strong>${ statistics.averageTweetsPerDayOverall.toFixed( 2 ) }</strong></li>
+                    <li>Max posts in a single day: <strong>${ statistics.maxTweetsPerDay.toFixed( 2 ) }</strong></li>
+                    <li>Probably planned posts count: <strong>${ statistics.probablyPlannedPostsCount.toFixed( 2 ) }</strong></li>
+                </ul>
             `,
             dataToSave: {
                 averageTweetsPerDayActiveDays: averageTweetsPerDay,

@@ -9,7 +9,7 @@ export default class PostsFrequencyScanner extends Scanner {
         super()
     }
 
-    protected async _scan( { user, tweets }: IScannerParams ): Promise<IScannerOutput> {
+    protected async _scan( { tweets }: IScannerParams ): Promise<IScannerOutput> {
         const postsFrequencyMap: Map<number, number> = new Map();
 
         for ( let hour = 0; hour < HOURS_IN_DAY; hour++ ) {

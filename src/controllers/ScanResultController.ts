@@ -95,7 +95,9 @@ export default class ScanResultController implements IController {
             }
         );
 
-        response.render( 'profile_report_view', { profile, results } );
+        const documentsCount: number = await this._reportsModel.count();
+
+        response.render( 'profile_report_view', { profile, results, documentsCount } );
     }
 
     private async _getUserProfile( profile: string ): Promise<IGetUserDataResults> {

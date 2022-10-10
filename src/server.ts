@@ -36,7 +36,7 @@ const port: number = Number( process.env.PORT ) || 3000;
     const httpClient: HttpClient = new HttpClient();
 
     const reportsModel: ReportsModel = new ReportsModel( mongoose );
-    const scannersFactory: ScannersFactory = new ScannersFactory( browser, httpClient );
+    const scannersFactory: ScannersFactory = new ScannersFactory( browser, httpClient, reportsModel );
 
     const rootController: RootController = new RootController();
     const scanResultController: ScanResultController = new ScanResultController( scannersFactory, httpClient, reportsModel );
