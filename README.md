@@ -62,6 +62,3 @@ To start the application run the following commands in the root of this reposito
 2. Install JupyterLab - `pip3 install jupyterlab`.
 3. Install Jupyter Notebook - `pip3 install notebook`.
 4. Run notebook - `python3 -m notebook`.
-
-
-
