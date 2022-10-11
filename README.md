@@ -55,3 +55,13 @@ To start the application run the following commands in the root of this reposito
 1. `pnpm install ./`
 2. `pnpm run start`
 3. Open browser and visit `http://localhost:3000/`.
+
+## Jupyter Notebook launch
+
+1. Ensure you have `python3` installed - `python3 --version` and `pip` `python3 -m ensurepip`.
+2. Install JupyterLab - `pip3 install jupyterlab`.
+3. Install Jupyter Notebook - `pip3 install notebook`.
+4. Run notebook - `python3 -m notebook`.
+
+
+
