@@ -22,7 +22,7 @@ The application is an automation prepared for Master thesis research and experim
 ## Application flow diagram
 
 ```mermaid
-flowchart BT
+flowchart RL
     A(Actor) -- passes account ID ----> B[Application]
     B -- returns report --> A
     subgraph Application
