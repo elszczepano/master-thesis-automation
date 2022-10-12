@@ -45,6 +45,22 @@ flowchart RL
     end
 ```
 
+## Sequence diagram
+
+```mermaid
+sequenceDiagram
+    participant User as Actor
+    participant Application
+    participant ScanResultController
+    User->>Application: Passes Id
+    Application->>ScanResultController: Runs
+    loop Scanners
+        ScanResultController->>ScanResultController: Runs all scanners
+    end
+    ScanResultController-->>Application: Returns scan results
+    Application-->>User: Returns report
+```
+
 ## Development
 
 To run the automation locally here's the recommended list of software:
