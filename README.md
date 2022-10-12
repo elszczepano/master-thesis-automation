@@ -49,7 +49,7 @@ flowchart RL
 
 ```mermaid
 sequenceDiagram
-    participant User as Actor
+    actor User as Actor
     participant Application
     participant ScanResultController
     User->>Application: Passes Id
