@@ -49,7 +49,7 @@ interface IGetUserTweetsResults {
     }
 }
 
-export default class ScanResultController implements IController {
+export default class ScanController implements IController {
     public constructor(
         private readonly _scannersFactory: ScannersFactory,
         private readonly _httpClient: IHttpClient,

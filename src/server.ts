@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import Service from './Service';
 import Router from './Router';
 import RootController from './controllers/RootController';
-import ScanResultController from './controllers/ScanResultController';
+import ScanController from './controllers/ScanController';
 import DownloadReportController from './controllers/DownloadReportController';
 import { Browser } from 'puppeteer';
 import BrowserWorker from './BrowserWorker';
@@ -39,7 +39,7 @@ const port: number = Number( process.env.PORT ) || 3000;
     const scannersFactory: ScannersFactory = new ScannersFactory( browser, httpClient, reportsModel );
 
     const rootController: RootController = new RootController();
-    const scanResultController: ScanResultController = new ScanResultController( scannersFactory, httpClient, reportsModel );
+    const ScanController: ScanController = new ScanController( scannersFactory, httpClient, reportsModel );
     const downloadReportController: DownloadReportController = new DownloadReportController( reportsModel );
 
     const router: Router = new Router(
@@ -52,7 +52,7 @@ const port: number = Number( process.env.PORT ) || 3000;
             {
                 method: 'post',
                 path: '/scan-result',
-                controller: scanResultController
+                controller: ScanController
             },
             {
                 method: 'get',

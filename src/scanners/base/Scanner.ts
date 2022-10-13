@@ -1,4 +1,4 @@
-import { IUser, ITweet } from '../../controllers/ScanResultController';
+import { IUser, ITweet } from '../../controllers/ScanController';
 import Utils from '../../Utils';
 import { IReport } from '../../models/ReportsModel';
 
