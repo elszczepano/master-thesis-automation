@@ -51,13 +51,13 @@ flowchart RL
 sequenceDiagram
     actor User as Actor
     participant Application
-    participant ScanResultController
+    participant ScanController
     User->>Application: Passes Id
-    Application->>ScanResultController: Runs
+    Application->>ScanController: Runs
     loop Scanners
-        ScanResultController->>ScanResultController: Runs all scanners
+        ScanController->>ScanController: Runs all scanners
     end
-    ScanResultController-->>Application: Returns scan results
+    ScanController-->>Application: Returns scan results
     Application-->>User: Returns report
 ```
 
