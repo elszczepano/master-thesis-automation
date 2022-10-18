@@ -39,7 +39,7 @@ const port: number = Number( process.env.PORT ) || 3000;
     const scannersFactory: ScannersFactory = new ScannersFactory( browser, httpClient, reportsModel );
 
     const rootController: RootController = new RootController();
-    const ScanController: ScanController = new ScanController( scannersFactory, httpClient, reportsModel );
+    const scanController: ScanController = new ScanController( scannersFactory, httpClient, reportsModel );
     const downloadReportController: DownloadReportController = new DownloadReportController( reportsModel );
 
     const router: Router = new Router(
@@ -52,7 +52,7 @@ const port: number = Number( process.env.PORT ) || 3000;
             {
                 method: 'post',
                 path: '/scan-result',
-                controller: ScanController
+                controller: scanController
             },
             {
                 method: 'get',
