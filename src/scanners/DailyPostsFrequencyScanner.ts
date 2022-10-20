@@ -38,6 +38,10 @@ export default class PostsFrequencyScanner extends Scanner {
 
         value = value + '</ul>';
 
+        if ( !tweets.length ) {
+            value = 'N/A - no posts found';
+        }
+
         return {
             value,
             explanation: `

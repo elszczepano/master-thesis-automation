@@ -12,6 +12,8 @@ export default class EmailAddressScanner extends Scanner {
     protected async _scan( { user }: IScannerParams ): Promise<IScannerOutput> {
         const page: Page = await this._browser.newPage();
 
+        await page.setJavaScriptEnabled( true );
+
         // Pretend that we do not use a headless browser
         await page.setUserAgent(
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36'
@@ -24,6 +26,8 @@ export default class EmailAddressScanner extends Scanner {
         const resetPasswordButton: string = 'div[data-testid="ocfEnterTextNextButton"]';
 
         await page.goto('https://twitter.com/i/flow/password_reset');
+
+        
 
         // Fill the reset password form
         await page.waitForSelector( resetPasswordInputField );

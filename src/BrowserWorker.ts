@@ -4,7 +4,10 @@ export default class BrowserWorker {
     private _browser: Browser;
 
     public async launch(): Promise<void> {
-        this._browser = await puppeteer.launch( { args: [ '--no-sandbox' ] } );
+        this._browser = await puppeteer.launch( {
+            executablePath: '/usr/bin/chromium-browser',
+            args: [ '--no-sandbox', '--headless' ]
+        } );
     }
 
     public get browser(): Browser {

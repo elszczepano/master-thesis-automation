@@ -12,6 +12,7 @@ import DailyPostsFrequencyScanner from '../DailyPostsFrequencyScanner';
 import EmojiScanner from '../EmojiScanner';
 import HashtagScanner from '../HashtagScanner';
 import MentionsScanner from '../MentionsScanner';
+import KnownProfilesScanner from '../KnownProfilesScanner';
 
 export default class ScannersFactory {
     private readonly _scanners: IScanner[] = [];
@@ -29,6 +30,7 @@ export default class ScannersFactory {
         const hashtagScanner: HashtagScanner = new HashtagScanner();
         const mentionScanner: MentionsScanner = new MentionsScanner();
         const dailyPostsFrequencyScanner: DailyPostsFrequencyScanner = new DailyPostsFrequencyScanner();
+        const knownProfilesScanner: KnownProfilesScanner = new KnownProfilesScanner();
 
         this._scanners.push( userDetailsScanner );
         this._scanners.push( postsFrequencyScanner );
@@ -38,6 +40,7 @@ export default class ScannersFactory {
         this._scanners.push( emojiScanner );
         this._scanners.push( hashtagScanner );
         this._scanners.push( mentionScanner );
+        this._scanners.push( knownProfilesScanner );
     }
 
     public get scanners(): IScanner[] {
