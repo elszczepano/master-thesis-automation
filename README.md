@@ -33,6 +33,7 @@ flowchart RL
         K[Daily Frequency Posts Scanner]  <---> B
         L[Mentions Scanner]  <---> B
         D[Email Address Scanner] <---> B
+        N[Known Profiles Scanner] <---> B
         M[MongoDB] <--- B
         H[V7 Labs] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
