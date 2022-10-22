@@ -24,7 +24,7 @@ export default class PostsFrequencyScanner extends Scanner {
             postsFrequencyMap.set( hour, currentHourFrequency + 1 );
         } );
 
-        let value = '<p>Hourly posts frequency. Timezone: <strong>CEST (Central European Summer Time) UTC/GMT+2 hours)</strong>:</p><ul class="posts_frequency">';
+        let value = `<p>Hourly posts frequency. Timezone: <strong>${ Intl.DateTimeFormat().resolvedOptions().timeZone }</strong>:</p><ul class="posts_frequency">`;
 
         for ( let hour = 0; hour < HOURS_IN_DAY; hour++ ) {
             const postsCount: number = postsFrequencyMap.get( hour )!;
@@ -46,7 +46,7 @@ export default class PostsFrequencyScanner extends Scanner {
             value,
             explanation: `
             How many posts were added in a given hour.
-            Note that the posts timezone is <strong>CEST (Central European Summer Time) UTC/GMT+2 hours)</strong>.
+            Note that the posts timezone is <strong>${ Intl.DateTimeFormat().resolvedOptions().timeZone }</strong>.
             Hours where there are no posts has been skipped.
             `
         };
