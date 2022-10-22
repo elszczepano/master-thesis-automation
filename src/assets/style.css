@@ -16,7 +16,7 @@ body {
 
 .wrapper__content {
     margin: 0 auto;
-    width: 65%;
+    width: 75%;
     flex: 1 0 auto;
 }
 
@@ -52,4 +52,9 @@ body {
 .user_details__list {
     list-style: disc;
     list-style-position: inside;
+}
+
+.suspicious_content {
+    color: #CC0000;
+    font-weight: bold;
 }

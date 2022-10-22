@@ -1,0 +1,1 @@
+export const SUSPICIOUS_CONTENT_CLASS: string = 'class="suspicious_content"';

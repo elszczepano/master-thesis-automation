@@ -1,6 +1,9 @@
 import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
 import ReportsModel, { IReportsStatistics } from '../models/ReportsModel';
 import Utils from '../Utils';
+import { SUSPICIOUS_CONTENT_CLASS } from '../constants';
+
+const SUSPICIOUS_PLANNED_POSTS_RATIO: number = 0.5;
 
 export default class PostsFrequencyScanner extends Scanner {
     protected readonly _scannedElement: string = 'Posts frequency';
@@ -42,11 +45,11 @@ export default class PostsFrequencyScanner extends Scanner {
             value: `
             <ul class="details__list">
                 <li>Last activity at: <strong>${ lastActivityAt.toISOString() }</strong></li>
-                <li>Average number of posts in active days: <strong>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
-                <li>Average number of posts overall: <strong>${ averageTweetsPerDayOverall.toFixed( 2 ) }</strong> (incl. inactive days)</li>
+                <li>Average number of posts in active days: <strong ${ averageTweetsPerDay > statistics.averageTweetsPerDayActiveDays * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
+                <li>Average number of posts overall: <strong ${ averageTweetsPerDayOverall > statistics.averageTweetsPerDayOverall * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ averageTweetsPerDayOverall.toFixed( 2 ) }</strong> (incl. inactive days)</li>
                 <li>Number of inactive days in a given period: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong></li>
-                <li>Max posts in a single day: <strong>${ maxTweetsPerDay }</strong></li>
-                <li>Probably planned posts count: <strong>${ probablyPlannedPostsCount } (${ probablyPlannedPostsCount ? ( ( probablyPlannedPostsCount / user.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) : 0 }%)</strong></li>
+                <li>Max posts in a single day: <strong ${ maxTweetsPerDay > statistics.maxTweetsPerDay * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ maxTweetsPerDay }</strong></li>
+                <li>Probably planned posts count: <strong ${ probablyPlannedPostsCount / user.public_metrics.tweet_count > SUSPICIOUS_PLANNED_POSTS_RATIO ? SUSPICIOUS_CONTENT_CLASS : '' }>${ probablyPlannedPostsCount } (${ probablyPlannedPostsCount ? ( ( probablyPlannedPostsCount / user.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) : 0 }%)</strong></li>
             </ul>
             `,
             explanation: `

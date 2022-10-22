@@ -27,8 +27,6 @@ export default class EmailAddressScanner extends Scanner {
 
         await page.goto('https://twitter.com/i/flow/password_reset');
 
-        
-
         // Fill the reset password form
         await page.waitForSelector( resetPasswordInputField );
         await page.type( resetPasswordInputField, user.username );

@@ -2,7 +2,8 @@ import { IHttpClient, HttpResponse } from '../HttpClient';
 import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
 import Utils from '../Utils';
 
-const SCANNER_URL = 'https://darwin.v7labs.com/ai/models/0e322ea6-3c51-4168-8a20-b25d0860664f/infer';
+const SCANNER_URL: string = 'https://darwin.v7labs.com/ai/models/0e322ea6-3c51-4168-8a20-b25d0860664f/infer';
+const FAKE_PERSON_LABEL: string = 'Likely Fake Person';
 
 interface IV7LabsScanResults {
     action: string;
@@ -51,7 +52,7 @@ export default class ProfilePictureScanner extends Scanner {
         const fakePercentage: string = `${ Math.round( response.result[ 0 ].inference.confidence * 100 ) }%`;
 
         return {
-            value: `<img src="${ profilePictureUrl }"><p>${ response.result[ 0 ].label } (${ fakePercentage })<p>`,
+            value: `<img src="${ profilePictureUrl }"><p ${ response.result[ 0 ].label === FAKE_PERSON_LABEL ? 'class="suspicious_content"': '' }>${ response.result[ 0 ].label } (${ fakePercentage })<p>`,
             explanation: 'The metric bases on a model learned from artificially generated human faces created via e.g. <a href="https://thispersondoesnotexist.com" target="_blank">This Person Does Not Exist</a>'
         };
     }

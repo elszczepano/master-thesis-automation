@@ -32,9 +32,9 @@ export default class UserDetailsScanner extends Scanner {
                 <p>Basic metrics from the scanned Twitter profile.<p>
                 <p>Statistics for already scanned profiles:</p>
                 <ul class="user_details__list">
-                    <li>Followers count: <strong>${ Math.round( followersCount ) }</strong></li>
-                    <li>Following count: <strong>${ Math.round( followingCount ) }</strong></li>
-                    <li>Tweets count: <strong>${  Math.round( tweetsCount ) }</strong></li>
+                    <li>Average followers count: <strong>${ Math.round( followersCount ) }</strong></li>
+                    <li>Average following count: <strong>${ Math.round( followingCount ) }</strong></li>
+                    <li>Average tweets count: <strong>${  Math.round( tweetsCount ) }</strong></li>
                 </ul>
             `,
             dataToSave: {

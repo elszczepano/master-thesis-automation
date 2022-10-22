@@ -1,3 +1,4 @@
+import { SUSPICIOUS_CONTENT_CLASS } from '../constants';
 import Scanner, { IScannerOutput, IScannerParams } from './base/Scanner';
 
 const KNOWN_TROLL_PROFILES: string[] = [
@@ -48,7 +49,7 @@ export default class KnownProfiesScanner extends Scanner {
         const normalizedKnownProfiles: string[] = KNOWN_TROLL_PROFILES.map( profile => profile.toLowerCase() );
 
         if ( normalizedKnownProfiles.includes( user.username.toLowerCase() ) ) {
-            value = '<p> The scanned profile is <strong>LISTED</strong> on the NASK list!'
+            value = `<p> The scanned profile is <strong ${ SUSPICIOUS_CONTENT_CLASS }>LISTED</strong> on the NASK list!`
         }
 
         return {
