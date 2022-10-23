@@ -46,7 +46,7 @@ export default class EmailAddressScanner extends Scanner {
 
         return {
             value: email || 'Email address cannot be found - Twitter page was not reachable or rate limit has been reached.',
-            explanation: 'Email can be fetched only in an obfuscated form. Please check if it matches to some pattern with other scanned accounts.'
+            explanation: 'Email can be fetched only in an obfuscated form. Please check if it matches to patterns with other scanned profiles.'
         };
     }
 }

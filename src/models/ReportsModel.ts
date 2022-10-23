@@ -1,5 +1,11 @@
 import { Schema, Mongoose, Model } from 'mongoose';
 
+interface IUser {
+    id: string;
+    name: string;
+    username: string;
+}
+
 export interface IReport {
     _id: string;
     averageTweetsPerDayOverall: number;
@@ -10,6 +16,8 @@ export interface IReport {
     followingCount: number;
     tweetsCount: number;
     tweets: { id: string; text: string; created_at: string }[];
+    followers: IUser[];
+    following: IUser[];
     lastScanAt: Date;
 }
 
@@ -21,6 +29,7 @@ export interface IReportsStatistics {
     followersCount: number;
     followingCount: number;
     tweetsCount: number;
+    
 }
 
 export default class ReportsModel {
@@ -42,6 +51,8 @@ export default class ReportsModel {
             followingCount: Number,
             tweetsCount: Number,
             tweets: [ { id: String, text: String, created_at: String } ],
+            followers: [ { id: String, name: String, username: String } ],
+            following: [ { id: String, name: String, username: String } ],
             lastScanAt: Date
         } );
 
@@ -84,5 +95,11 @@ export default class ReportsModel {
         )
 
         return statistics;
+    }
+
+    public async getScannedProfileNames(): Promise<string[]> {
+        const profiles: { _id: string }[] = await this._ReportModel.find( {}, { _id: 1 } );
+
+        return profiles.map( profile => profile._id );
     }
 }

@@ -13,15 +13,12 @@ import EmojiScanner from '../EmojiScanner';
 import HashtagScanner from '../HashtagScanner';
 import MentionsScanner from '../MentionsScanner';
 import KnownProfilesScanner from '../KnownProfilesScanner';
+import MutualConnectionsScanner from '../MutualConnectionsScanner';
 
 export default class ScannersFactory {
     private readonly _scanners: IScanner[] = [];
 
-    public constructor(
-        browser: Browser,
-        httpClient: HttpClient,
-        reportsModel: ReportsModel
-    ) {
+    public constructor( browser: Browser, httpClient: HttpClient, reportsModel: ReportsModel ) {
         const emailAddressScanner: EmailAddressScanner = new EmailAddressScanner( browser );
         const profilePictureScanner: ProfilePictureScanner = new ProfilePictureScanner( httpClient );
         const userDetailsScanner: UserDetailsScanner = new UserDetailsScanner( reportsModel );
@@ -31,6 +28,7 @@ export default class ScannersFactory {
         const mentionScanner: MentionsScanner = new MentionsScanner();
         const dailyPostsFrequencyScanner: DailyPostsFrequencyScanner = new DailyPostsFrequencyScanner();
         const knownProfilesScanner: KnownProfilesScanner = new KnownProfilesScanner();
+        const mutualConnectionsScanner: MutualConnectionsScanner = new MutualConnectionsScanner( httpClient, reportsModel );
 
         this._scanners.push( userDetailsScanner );
         this._scanners.push( postsFrequencyScanner );
@@ -41,6 +39,7 @@ export default class ScannersFactory {
         this._scanners.push( hashtagScanner );
         this._scanners.push( mentionScanner );
         this._scanners.push( knownProfilesScanner );
+        this._scanners.push( mutualConnectionsScanner );
     }
 
     public get scanners(): IScanner[] {

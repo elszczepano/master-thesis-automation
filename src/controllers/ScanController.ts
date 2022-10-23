@@ -13,7 +13,7 @@ interface IRequestBody {
     endDate: string;
 }
 
-export interface IGetUserDataResults {
+interface IGetUserDataResult {
     user: IUser;
     errors?: Record<string, unknown>;
 }
@@ -39,7 +39,7 @@ export interface ITweet {
     created_at: string;
 }
 
-interface IGetUserTweetsResults {
+interface IGetUserTweetsResult {
     data: ITweet[];
     meta: {
         next_token?: string;
@@ -100,7 +100,7 @@ export default class ScanController implements IController {
         response.render( 'profile_report_view', { profile, results, documentsCount } );
     }
 
-    private async _getUserProfile( profile: string ): Promise<IGetUserDataResults> {
+    private async _getUserProfile( profile: string ): Promise<IGetUserDataResult> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
             `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,description,name,public_metrics,profile_image_url`,
             { ...Utils.getTwitterAPIAuthHeaders() }
@@ -142,7 +142,7 @@ export default class ScanController implements IController {
                 { ...Utils.getTwitterAPIAuthHeaders() }
             );
 
-            const { meta, data: tweets } = await getUserTweetsResults.body.json() as IGetUserTweetsResults;
+            const { meta, data: tweets } = await getUserTweetsResults.body.json() as IGetUserTweetsResult;
 
             if ( !tweets?.length ) {
                 // Handle a situation when e.g. a rate limit is reached or the profile is empty.
