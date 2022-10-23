@@ -8,3 +8,4 @@ pnpm-lock.yaml
 darwinlabs
 
 notebooks/.ipynb_checkpoints
+notebooks/sourcedata
