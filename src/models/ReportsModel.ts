@@ -88,7 +88,15 @@ export default class ReportsModel {
             ]
         )
 
-        return statistics;
+        return statistics ?? {
+            averageTweetsPerDayOverall: 0,
+            averageTweetsPerDayActiveDays: 0,
+            maxTweetsPerDay: 0,
+            probablyPlannedPostsCount: 0,
+            followersCount: 0,
+            followingCount: 0,
+            tweetsCount: 0
+        };
     }
 
     public async getScannedProfileNames(): Promise<string[]> {
