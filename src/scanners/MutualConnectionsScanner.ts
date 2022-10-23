@@ -54,7 +54,7 @@ export default class MutualConnectionsScanner extends Scanner {
                     The metric shows the list and count of accounts that follows or are followed
                     by the scanned profile and have been already scanned in the application.
 
-                    The metric may help to detect a nest of mutual connections between profiles.
+                    The metric may help to detect a net of mutual connections between profiles.
                 </p>
             `,
             dataToSave: {
