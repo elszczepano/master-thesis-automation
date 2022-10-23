@@ -38,16 +38,14 @@ export default class MutualConnectionsScanner extends Scanner {
         const commonFollowers: string[] = this._getCommonUsernames( profiles, followers );
         const commonFollowings: string[] = this._getCommonUsernames( profiles, following );
 
-        console.log( 'RR', profiles, followers, following )
-
         return {
             value: `
                 <p>
-                    Followers accounts that were already scanned - <strong>(${ commonFollowers.join( ', ' ) })</strong>.
+                    Already scanned followers: <strong>(${ commonFollowers.join( ', ' ) })</strong>.
                     Count: <strong>${ commonFollowers.length }</strong>
                 </p>
                 <p>
-                    Followings accounts that were already scanned - <strong>(${ commonFollowings.join( ', ' ) })</strong>.
+                    Already scanned followings: <strong>(${ commonFollowings.join( ', ' ) })</strong>.
                     Count: <strong>${ commonFollowings.length }</strong>
                 </p>
             `,
@@ -59,7 +57,10 @@ export default class MutualConnectionsScanner extends Scanner {
                     The metric may help to detect a nest of mutual connections between profiles.
                 </p>
             `,
-            dataToSave: { following, followers }
+            dataToSave: {
+                following: following.map( user => user.username ),
+                followers: followers.map( user => user.username )
+            }
         };
     }
 
