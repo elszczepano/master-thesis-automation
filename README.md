@@ -34,7 +34,9 @@ flowchart RL
         L[Mentions Scanner]  <---> B
         D[Email Address Scanner] <---> B
         N[Known Profiles Scanner] <---> B
-        M[MongoDB] <--- B
+        O[NASK profiles list] <---> N
+        P[Mutual Connections Scanner] <---> B
+        M[MongoDB] <---> B
         H[V7 Labs] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
         J[Twitter REST API] <---> C
@@ -43,6 +45,7 @@ flowchart RL
         J <---> G
         J <---> K
         J <---> L
+        J <---> P
     end
 ```
 
