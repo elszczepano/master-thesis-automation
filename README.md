@@ -18,6 +18,11 @@ The application is an automation prepared for Master thesis research and experim
   * Max number of posts in a single day
   * Number of posts probably created via planner - if a post is created via planner then the number of seconds and milliseconds in the timestamp equals 0.
 * Used emojis report.
+* User hashtags.
+* Mentioned users.
+* Posts frequency split to particular hours.
+* Check in NASK db in the context of known disinformation content producers.
+* Connections with other scanned profiles.
 
 ## Application flow diagram
 
@@ -65,16 +70,21 @@ sequenceDiagram
     Application-->>User: Returns report
 ```
 
-## Development
+## Development 
 
 To run the automation locally here's the recommended list of software:
 * [pnpm - 6.32.9](https://pnpm.io/)
 * [Node.js - 16.14.2](https://nodejs.org/en/)
+* Docker and docker-composer
 
 To start the application run the following commands in the root of this repository:
 1. `pnpm install ./`
-2. `pnpm run start`
-3. Open browser and visit `http://localhost:3000/`.
+2. Run docker-compose via `docker-compose up --build`
+3. `pnpm run start`
+4. Open browser and visit `http://localhost:3000/`.
+5. Fill in the form and click scan
+6. Wait for the results. Yes it may take a while ;)
+7. Once report receive you can download a brief by clicking the `Download account data button`. I recommend saving it in the `notebooks/sourcedata` directory.
 
 ## Jupyter Notebook launch
 
@@ -82,3 +92,5 @@ To start the application run the following commands in the root of this reposito
 2. Install JupyterLab - `pip3 install jupyterlab`.
 3. Install Jupyter Notebook - `pip3 install notebook`.
 4. Run notebook - `python3 -m notebook`.
+5. Make sure you have account data file under the `notebooks/sourcedata` path. The filename does not matter but note that only the 1st file in the directory will be taken into account.
+
