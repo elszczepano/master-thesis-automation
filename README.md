@@ -92,5 +92,6 @@ To start the application run the following commands in the root of this reposito
 2. Install JupyterLab - `pip3 install jupyterlab`.
 3. Install Jupyter Notebook - `pip3 install notebook`.
 4. Run notebook - `python3 -m notebook`.
-5. Make sure you have account data file under the `notebooks/sourcedata` path. The filename does not matter but note that only the 1st file in the directory will be taken into account.
+5. To run `Semantic Content Analysis`, make sure you have **account data file** under the `notebooks/sourcedata/user` path. The filename does not matter but note that only the 1st file in the directory will be taken into account.
+6. To run `Dependency Graph` make sure you have the **full database file** under the `notebooks/sourcedata/dbudump` path. The filename does not matter but note that only the 1st file in the directory will be taken into account.
 
