@@ -6,6 +6,7 @@ import Router from './Router';
 import RootController from './controllers/RootController';
 import ScanController from './controllers/ScanController';
 import DownloadReportController from './controllers/DownloadReportController';
+import DownloadDatabaseContentController from './controllers/DownloadDatabaseContentController';
 import { Browser } from 'puppeteer';
 import BrowserWorker from './BrowserWorker';
 import HttpClient from './HttpClient';
@@ -41,6 +42,7 @@ const port: number = Number( process.env.PORT ) || 3000;
     const rootController: RootController = new RootController();
     const scanController: ScanController = new ScanController( scannersFactory, httpClient, reportsModel );
     const downloadReportController: DownloadReportController = new DownloadReportController( reportsModel );
+    const downloadDatabaseContentController: DownloadDatabaseContentController = new DownloadDatabaseContentController( reportsModel );
 
     const router: Router = new Router(
         [
@@ -58,6 +60,11 @@ const port: number = Number( process.env.PORT ) || 3000;
                 method: 'get',
                 path: '/download-report/:username',
                 controller: downloadReportController
+            },
+            {
+                method: 'get',
+                path: '/download-database',
+                controller: downloadDatabaseContentController
             }
         ]
     );

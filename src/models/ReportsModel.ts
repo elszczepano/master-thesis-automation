@@ -65,6 +65,10 @@ export default class ReportsModel {
         return this._ReportModel.findOne( { _id: username } );
     }
 
+    public async getDatabaseContent(): Promise<IReport[]> {
+        return this._ReportModel.find();
+    }
+
     public async count(): Promise<number> {
         return this._ReportModel.countDocuments();
     }
