@@ -23,6 +23,7 @@ The application is an automation prepared for Master thesis research and experim
 * Posts frequency split to particular hours.
 * Check in NASK db in the context of known disinformation content producers.
 * Connections with other scanned profiles.
+* Provided profile name on other websites.
 
 ## Application flow diagram
 
@@ -41,6 +42,8 @@ flowchart RL
         N[Known Profiles Scanner] <---> B
         O[NASK profiles list] <---> N
         P[Mutual Connections Scanner] <---> B
+        R[Other Sites Scanner] <---> B
+        S[Maigret] <---> R
         M[MongoDB] <---> B
         H[V7 Labs] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
