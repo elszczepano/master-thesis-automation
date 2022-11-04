@@ -53,10 +53,6 @@ export default class ReportsModel {
         this._ReportModel = driver.model<IReport>( 'Report', reportsSchema );
     }
 
-    public get queryable(): Model<IReport> {
-        return this._ReportModel;
-    }
-
     public async save( username: string, data: Partial<IReport> ): Promise<void> {
         await this._ReportModel.updateOne( { _id: username }, { ...data }, { upsert: true } );
     }
@@ -101,11 +97,5 @@ export default class ReportsModel {
             followingCount: 0,
             tweetsCount: 0
         };
-    }
-
-    public async getScannedProfileNames(): Promise<string[]> {
-        const profiles: { _id: string }[] = await this._ReportModel.find( {}, { _id: 1 } );
-
-        return profiles.map( profile => profile._id );
     }
 }
