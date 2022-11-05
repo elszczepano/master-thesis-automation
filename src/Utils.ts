@@ -54,6 +54,20 @@ export default class Utils {
         return `https://api.twitter.com/2/users/${ id }/tweets${ queryParams }`;
     }
 
+    public static getUserFollowersAPIUrl(
+        id: string,
+        type: 'followers' | 'following',
+        paginationToken?: string
+    ): string {
+        let queryParams: string = `?max_results=1000`;
+
+        if ( paginationToken ) {
+            queryParams = `${ queryParams }&pagination_token=${ paginationToken }`;
+        }
+
+        return `https://api.twitter.com/2/users/${ id }/${ type }${ queryParams }`;
+    }
+
     public static sortByFrequency( frequencies: Record<string, number> ): Record<string, number> {
         return Object.entries( frequencies )
             .sort( ( [ , a ], [ , b ] ) => b - a )

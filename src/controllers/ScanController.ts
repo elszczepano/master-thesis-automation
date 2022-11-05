@@ -50,6 +50,20 @@ interface IGetUserTweetsResult {
     }
 }
 
+interface IFollower {
+    id: string;
+    name: string;
+    username: string;
+}
+
+interface IGetIFollowerResult {
+    data: IFollower[];
+    meta: {
+        next_token?: string;
+        result_count: number;
+    }
+}
+
 export default class ScanController implements IController {
     public constructor(
         private readonly _scannersFactory: ScannersFactory,
@@ -87,11 +101,18 @@ export default class ScanController implements IController {
             return { ...prev, ...curr.dataToSave ?? {} };
         }, {} );
 
+        const [ followers, following ] = await Promise.all( [
+            this._getFollowers( user ),
+            this._getFollowing( user )
+        ] );
+
         await this._reportsModel.save( 
             user.username,
             {
                 tweets,
                 lastScanAt: new Date(),
+                followers: followers.map( f => f.username ),
+                following: following.map( f => f.username ),
                 ...dataToSave
             }
         );
@@ -99,6 +120,14 @@ export default class ScanController implements IController {
         const documentsCount: number = await this._reportsModel.count();
 
         response.render( 'profile_report_view', { profile, results, documentsCount } );
+    }
+
+    private async _getFollowers( user: IUser ): Promise<IFollower[]> {
+        return this._getUsersList( { user, type: 'followers' } );
+    }
+
+    private async _getFollowing( user: IUser ): Promise<IFollower[]> {
+        return this._getUsersList( { user, type: 'following' } );
     }
 
     private async _getUserProfile( profile: string ): Promise<IGetUserDataResult> {
@@ -157,4 +186,31 @@ export default class ScanController implements IController {
 
         return userTweets;
     }
+
+    private async _getUsersList( params: { type: 'followers' | 'following', user: IUser } ): Promise<IFollower[]> {
+        let userList: IFollower[] = [];
+
+        let paginationToken: string | undefined = '';
+
+        while ( paginationToken !== undefined ) {
+            const getUsersResults: HttpResponse = await this._httpClient.get(
+                Utils.getUserFollowersAPIUrl( params.user.id, params.type, paginationToken ),
+                { ...Utils.getTwitterAPIAuthHeaders() }
+            );
+
+            const { meta, data: users } = await getUsersResults.body.json() as IGetIFollowerResult;
+
+            if ( !users?.length ) {
+                // Handle a situation when e.g. a rate limit is reached or the list is empty.
+                break;
+            }
+
+            userList = [ ...userList, ...users ];
+
+            paginationToken = meta.next_token;
+        }
+
+        return userList;
+    }
 }
+

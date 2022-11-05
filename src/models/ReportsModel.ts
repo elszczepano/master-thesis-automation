@@ -23,7 +23,6 @@ export interface IReportsStatistics {
     followersCount: number;
     followingCount: number;
     tweetsCount: number;
-    
 }
 
 export default class ReportsModel {
