@@ -63,3 +63,9 @@ body {
     word-break: break-all;
 }
 
+.verified_badge {
+    width: 16px;
+    top: 3px;
+    left: -2px;
+    position: relative;
+}

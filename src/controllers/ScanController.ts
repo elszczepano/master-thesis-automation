@@ -31,6 +31,7 @@ export interface IUser {
         listed_count: number;
     };
     created_at: string;
+    verified: boolean;
 }
 
 export interface ITweet {
@@ -102,7 +103,7 @@ export default class ScanController implements IController {
 
     private async _getUserProfile( profile: string ): Promise<IGetUserDataResult> {
         const getUserDataResults: HttpResponse = await this._httpClient.get(
-            `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=created_at,description,name,public_metrics,profile_image_url`,
+            `https://api.twitter.com/2/users/by/username/${ profile }?user.fields=verified,created_at,description,name,public_metrics,profile_image_url`,
             { ...Utils.getTwitterAPIAuthHeaders() }
         );
 
