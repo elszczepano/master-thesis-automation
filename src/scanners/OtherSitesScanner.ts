@@ -45,7 +45,7 @@ export default class UserDetailsScanner extends Scanner {
         let urlsHtml: string = '';
 
         for ( const url of urls ) {
-            urlsHtml += `<li><a href="${ url }" target="_blank">${ url }</a></li>`;
+            urlsHtml += `<li><a href="${ url }" target="_blank" class="maigret-link">${ url }</a></li>`;
         }
 
         return {
