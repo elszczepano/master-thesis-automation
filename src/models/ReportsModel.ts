@@ -13,6 +13,7 @@ export interface IReport {
     followers: string[];
     following: string[];
     lastScanAt: Date;
+    dataset: string;
 }
 
 export interface IReportsStatistics {
@@ -46,7 +47,8 @@ export default class ReportsModel {
             tweets: [ { id: String, text: String, created_at: String } ],
             followers: [ { type: String } ],
             following: [ { type: String } ],
-            lastScanAt: Date
+            lastScanAt: Date,
+            dataset: String
         } );
 
         this._ReportModel = driver.model<IReport>( 'Report', reportsSchema );
@@ -60,12 +62,16 @@ export default class ReportsModel {
         return this._ReportModel.findOne( { _id: username } );
     }
 
-    public async getDatabaseContent(): Promise<IReport[]> {
-        return this._ReportModel.find();
+    public async getDatasetContent( dataset: string ): Promise<IReport[]> {
+        return this._ReportModel.find( { dataset } );
     }
 
     public async count(): Promise<number> {
         return this._ReportModel.countDocuments();
+    }
+
+    public async getDatasets(): Promise<string[]> {
+        return this._ReportModel.distinct( 'dataset' );
     }
 
     public async getStatistics(): Promise<IReportsStatistics> {

@@ -5,17 +5,23 @@ import { Request, Response } from 'express';
 import { IController } from './Controller';
 import ReportsModel, { IReport } from '../models/ReportsModel';
 
+interface IRequestParams {
+    dataset: string;
+}
+
 export default class DownloadReportController implements IController {
     public constructor( private readonly _reportsModel: ReportsModel ) { }
 
-    public async execute( request: Request, response: Response ): Promise<void> {
-        const content: IReport[] = await this._reportsModel.getDatabaseContent();
+    public async execute( request: Request<IRequestParams>, response: Response ): Promise<void> {
+        const { dataset }: IRequestParams = request.params;
+
+        const content: IReport[] = await this._reportsModel.getDatasetContent( dataset );
 
         if ( !content.length ) {
             response.status( 404 ).end();
         }
 
-        const disposition = 'attachment; filename="database.json"';
+        const disposition = 'attachment; filename="dataset.json"';
         response.setHeader( 'Content-type', 'application/json' );
         response.setHeader( 'Content-Disposition', disposition );
 

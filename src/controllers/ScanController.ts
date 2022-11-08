@@ -9,8 +9,9 @@ import ReportsModel, { IReport } from '../models/ReportsModel';
 
 interface IRequestBody {
     profile: string;
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
+    dataset?: string;
 }
 
 interface IGetUserDataResult {
@@ -73,12 +74,19 @@ export default class ScanController implements IController {
 
     public async execute( request: Request, response: Response ): Promise<void> {
         const { profile, startDate: start, endDate: end }: IRequestBody = request.body;
+        const dataset: string = request.body.dataset ? request.body.dataset : 'dataset';
 
         const startDate: Date | undefined = start ? new Date( start ) : undefined;
         const endDate: Date | undefined = end ? new Date( end ) : undefined;
 
+        const datasets: string[] = await this._reportsModel.getDatasets();
+
+        if ( !datasets.includes( dataset ) ) {
+            datasets.push( dataset );
+        }
+
         if ( !this._isValidTimeRange( startDate, endDate ) ) {
-            response.render( 'action_failed', { profile, reason: 'Invalid time range.' } );
+            response.render( 'action_failed', { profile, datasets, reason: 'Invalid time range.' } );
 
             return;
         }
@@ -86,7 +94,7 @@ export default class ScanController implements IController {
         const { errors, user } = await this._getUserProfile( profile );
 
         if ( errors ) {
-            response.render( 'action_failed', { profile, reason: 'Profile not found.' } );
+            response.render( 'action_failed', { profile, datasets, reason: 'Profile not found.' } );
 
             return;
         }
@@ -113,13 +121,14 @@ export default class ScanController implements IController {
                 lastScanAt: new Date(),
                 followers: followers.map( f => f.username ),
                 following: following.map( f => f.username ),
+                dataset,
                 ...dataToSave
             }
         );
 
         const documentsCount: number = await this._reportsModel.count();
 
-        response.render( 'profile_report_view', { profile, results, documentsCount } );
+        response.render( 'profile_report_view', { profile, results, documentsCount, datasets, dataset } );
     }
 
     private async _getFollowers( user: IUser ): Promise<IFollower[]> {

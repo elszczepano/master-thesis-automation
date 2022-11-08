@@ -30,13 +30,20 @@ html
               a(class="button is-link is-medium" href="/download-report/" + profile)
                 | Download account data
             div(class="field download_button_field")
-              a(class="button is-link is-medium" href="/download-database")
-                | Download entire database content
+              a(class="button is-link is-medium" href="/download-dataset" + dataset)
+                | Download related dataset
             form(role="form" action="scan-result" method="POST" id="scanProfile")
               div(class="field")
                 label(class="label" for="profile")
                   | Profile name <span class="tag is-light is-danger">(required)</span>
                 input(class="input is-medium form__input" id="profile" type="text" placeholder="Scan another profile" name="profile" required)
+              div(class="field")
+                label(class="label" for="dataset")
+                  | Dataset <span class="tag is-light is-warning">("default" if not set)</span>
+                input(class="input is-medium form__input" id="dataset" type="text" placeholder="dataset" name="dataset" list="datasets")
+                datalist(id="datasets")
+                  each dataset in datasets
+                    option(value=dataset)
               div(class="field")
                 label(class="label" for="startDate")
                   | Analyze Tweets from <span class="tag is-info is-light">(optional)</span>
