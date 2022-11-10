@@ -63,7 +63,7 @@ const port: number = Number( process.env.PORT ) || 3000;
             },
             {
                 method: 'get',
-                path: '/download-dataset',
+                path: '/download-dataset/:dataset',
                 controller: downloadDatasetContentController
             }
         ]
