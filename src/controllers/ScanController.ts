@@ -39,6 +39,13 @@ export interface ITweet {
     id: string;
     text: string;
     created_at: string;
+    source: string;
+    public_metrics: {
+        retweet_count: number;
+        reply_count: number;
+        like_count: number;
+        quote_count: number;
+    }
 }
 
 interface IGetUserTweetsResult {
