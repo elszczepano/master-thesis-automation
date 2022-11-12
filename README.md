@@ -42,6 +42,7 @@ flowchart RL
         O[NASK profiles list] <---> N
         R[Other Sites Scanner] <---> B
         S[Maigret] <---> R
+        T[Most Popular Posts Scanner] <---> B
         M[MongoDB] <---> B
         H[V7 Labs] <---> C
         I["Headless Chrome Browser (Puppeteer)"] <---> D
@@ -51,6 +52,7 @@ flowchart RL
         J <---> G
         J <---> K
         J <---> L
+        J <---> T
     end
 ```
 
