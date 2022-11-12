@@ -53,7 +53,7 @@ export default class UserDetailsScanner extends Scanner {
                 <p>Maigret returned the following links:</p>
                 <ul>${ urlsHtml }</ul>
             `,
-            explanation,
+            explanation
         };
     }
 }

@@ -59,7 +59,7 @@ export default class PostsFrequencyScanner extends Scanner {
                 <li>Number of inactive days in a given period: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong></li>
                 <li>Max posts in a single day: <strong ${ maxTweetsPerDay > statistics.maxTweetsPerDay * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ maxTweetsPerDay }</strong></li>
                 <li>Probably planned posts count: <strong ${ probablyPlannedPostsCount / user.public_metrics.tweet_count > SUSPICIOUS_PLANNED_POSTS_RATIO ? SUSPICIOUS_CONTENT_CLASS : '' }>${ probablyPlannedPostsCount } (${ probablyPlannedPostsCount ? ( ( probablyPlannedPostsCount / user.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) : 0 }%)</strong></li>
-                <li>Posts created via: <ul class="mapped_sources">${ mappedSources }</ul></li>
+                <li>Posts created via: <ul class="disc_list">${ mappedSources }</ul></li>
             </ul>
             `,
             explanation: `
