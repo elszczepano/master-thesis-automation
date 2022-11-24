@@ -32,7 +32,7 @@ export default class MentionScanner extends Scanner {
 
         // Get only the most frequently used mentions
         for ( const [ mention, frequency ] of Object.entries( mentionsFrequency ).slice( 0, MENTIONS_FREQUENCY_LIMIT ) ) {
-            value += `<li><strong>${ mention }</strong> (${ frequency } ${ frequency == 1 ? 'occurrence' : 'occurrences' })</li>`;
+            value += `<li><a href="https://twitter.com/${ mention }" target="_blank"><strong>${ mention }</strong></a> (${ frequency } ${ frequency == 1 ? 'occurrence' : 'occurrences' })</li>`;
         }
 
         value = value + '</ul>';
