@@ -45,7 +45,7 @@ export default class EmailAddressScanner extends Scanner {
         }
 
         return {
-            value: email || 'Email address cannot be found - Twitter page is not reachable or rate limit has been reached.',
+            value: email || 'Email address cannot be found - Twitter page is not reachable or rate limit has been reached. Visit <a href="https://twitter.com/i/flow/password_reset" target="_blank">https://twitter.com/i/flow/password_reset</a> to perform a manual attempt.',
             explanation: 'Email can be fetched only in an obfuscated form. Please check if it matches to patterns with other scanned profiles.'
         };
     }

@@ -15,6 +15,7 @@ import MentionsScanner from '../MentionsScanner';
 import KnownProfilesScanner from '../KnownProfilesScanner';
 import OtherSitesScanner from '../OtherSitesScanner';
 import MostPopularPostsScanner from '../MostPopularPostsScanner';
+import GeolocationScanner from '../GeolocationScanner';
 
 export default class ScannersFactory {
     private readonly _scanners: IScanner[] = [];
@@ -31,6 +32,7 @@ export default class ScannersFactory {
         const knownProfilesScanner: KnownProfilesScanner = new KnownProfilesScanner();
         const otherSitesScanner: OtherSitesScanner = new OtherSitesScanner();
         const mostPopularPostsScanner: MostPopularPostsScanner = new MostPopularPostsScanner();
+        const geolocationScanner: GeolocationScanner = new GeolocationScanner( httpClient );
 
         this._scanners.push( userDetailsScanner );
         this._scanners.push( postsFrequencyScanner );
@@ -43,6 +45,7 @@ export default class ScannersFactory {
         this._scanners.push( knownProfilesScanner );
         this._scanners.push( otherSitesScanner );
         this._scanners.push( mostPopularPostsScanner );
+        this._scanners.push( geolocationScanner );
     }
 
     public get scanners(): IScanner[] {
