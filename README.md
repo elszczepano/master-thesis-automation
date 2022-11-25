@@ -31,28 +31,30 @@ flowchart RL
     A(Actor) -- passes account ID ----> B[Application]
     B -- returns report --> A
     subgraph Application
-        C[Profile Picture Scanner] <---> B
+        C[Email Address Scanner] <---> B
         E[Posts Frequency Scanner] <---> B
         F[User Details Scanner] <---> B
         G[Emoji Scanner] <---> B
         K[Daily Frequency Posts Scanner]  <---> B
         L[Mentions Scanner]  <---> B
-        D[Email Address Scanner] <---> B
+        D[Profile Picture Scanner] <---> B
         N[Known Profiles Scanner] <---> B
         O[NASK profiles list] <---> N
         R[Other Sites Scanner] <---> B
         S[Maigret] <---> R
         T[Most Popular Posts Scanner] <---> B
+        U[Geolocation Scanner] <---> B
         M[MongoDB] <---> B
-        H[V7 Labs] <---> C
-        I["Headless Chrome Browser (Puppeteer)"] <---> D
-        J[Twitter REST API] <---> C
+        H["Headless Chrome Browser (Puppeteer)"] <---> C
+        I[V7 Labs] <---> D
+        J[Twitter REST API] <---> D
         J <---> E
         J <---> F
         J <---> G
         J <---> K
         J <---> L
         J <---> T
+        J <---> U
     end
 ```
 
