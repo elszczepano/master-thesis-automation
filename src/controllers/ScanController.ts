@@ -1,3 +1,6 @@
+import fs from 'fs/promises';
+import path from 'path';
+
 import { Request, Response } from 'express';
 
 import ScannersFactory from '../scanners/base/ScannerFactory';
@@ -135,7 +138,9 @@ export default class ScanController implements IController {
 
         const documentsCount: number = await this._reportsModel.count();
 
-        response.render( 'profile_report_view', { profile, results, documentsCount, datasets, dataset } );
+        const styles: string = await fs.readFile( path.join( __dirname, '../assets/style.css' ) , { encoding: 'utf8' } );
+
+        response.render( 'profile_report_view', { profile, results, documentsCount, datasets, dataset, styles } );
     }
 
     private async _getFollowers( user: IUser ): Promise<IFollower[]> {
@@ -229,4 +234,3 @@ export default class ScanController implements IController {
         return userList;
     }
 }
-
