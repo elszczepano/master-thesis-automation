@@ -26,9 +26,9 @@ export default class EmojiScanner extends Scanner {
             emojis = [ ...emojis, ...currentTweetEmojis ];
         } );
 
-        const emojisFrequency: Record<string, number> = Utils.sortByFrequency( Utils.countFrequency( emojis ) );
+        const emojisFrequency: [ string, number ][] = Utils.sortByFrequency( emojis );
 
-        if ( !Object.keys( emojisFrequency ).length ) {
+        if ( !emojisFrequency.length ) {
             return {
                 value: 'N/A',
                 explanation: 'The scanned profile does not use emojis.'
@@ -38,7 +38,7 @@ export default class EmojiScanner extends Scanner {
         let value = '<p>Most frequent emojis:</p><ul class="emojis_frequency">';
 
         // Get only the most frequently used emojis
-        for ( const [ emoji, frequency ] of Object.entries( emojisFrequency ).slice( 0, EMOJIS_FREQUENCY_LIMIT ) ) {
+        for ( const [ emoji, frequency ] of emojisFrequency.slice( 0, EMOJIS_FREQUENCY_LIMIT ) ) {
             value += `<li>${ emoji } (${ frequency } ${ frequency == 1 ? 'occurrence' : 'occurrences' })</li>`;
         }
 

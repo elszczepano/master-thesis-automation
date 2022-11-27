@@ -54,6 +54,28 @@ export default class Utils {
         return `https://api.twitter.com/2/users/${ id }/tweets${ queryParams }`;
     }
 
+    public static getUserTweetLikesAPIUrl(
+        id: string,
+        paginationToken?: string,
+        timeRange: { startDate?: Date; endDate?: Date; } = {}
+    ): string {
+        let queryParams: string = `?max_results=${ MAX_RESULTS_PER_PAGE }&tweet.fields=author_id`;
+
+        if ( paginationToken ) {
+            queryParams = `${ queryParams }&pagination_token=${ paginationToken }`;
+        }
+
+        if ( timeRange.startDate ) {
+            queryParams = `${ queryParams }&start_time=${ timeRange.startDate.toISOString() }`;
+        }
+
+        if ( timeRange.endDate ) {
+            queryParams = `${ queryParams }&end_time=${ timeRange.endDate.toISOString() }`;
+        }
+
+        return `https://api.twitter.com/2/users/${ id }/liked_tweets${ queryParams }`;
+    }
+
     public static getUserFollowersAPIUrl(
         id: string,
         type: 'followers' | 'following',
@@ -68,10 +90,8 @@ export default class Utils {
         return `https://api.twitter.com/2/users/${ id }/${ type }${ queryParams }`;
     }
 
-    public static sortByFrequency( frequencies: Record<string, number> ): Record<string, number> {
-        return Object.entries( frequencies )
-            .sort( ( [ , a ], [ , b ] ) => b - a )
-            .reduce( ( r, [ k, v ] ) => ( { ...r, [ k ]: v } ), {} );
+    public static sortByFrequency( strings: string[] ): [ string, number ][] {
+        return Object.entries( Utils.countFrequency( strings ) ).sort( ( [ , a ], [ , b ] ) => b - a );
     }
 
     public static countFrequency( strings: string[] ): Record<string, number> {

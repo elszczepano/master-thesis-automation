@@ -11,7 +11,7 @@ import PostsFrequencyScanner from '../PostsFrequencyScanner';
 import DailyPostsFrequencyScanner from '../DailyPostsFrequencyScanner';
 import EmojiScanner from '../EmojiScanner';
 import HashtagScanner from '../HashtagScanner';
-import MentionsScanner from '../MentionsScanner';
+import MentionsAndLikesScanner from '../MentionsAndLikesScanner';
 import KnownProfilesScanner from '../KnownProfilesScanner';
 import OtherSitesScanner from '../OtherSitesScanner';
 import MostPopularPostsScanner from '../MostPopularPostsScanner';
@@ -27,7 +27,7 @@ export default class ScannersFactory {
         const postsFrequencyScanner: PostsFrequencyScanner = new PostsFrequencyScanner( reportsModel );
         const emojiScanner: EmojiScanner = new EmojiScanner();
         const hashtagScanner: HashtagScanner = new HashtagScanner();
-        const mentionScanner: MentionsScanner = new MentionsScanner();
+        const mentionsAndLikesScanner: MentionsAndLikesScanner = new MentionsAndLikesScanner( httpClient );
         const dailyPostsFrequencyScanner: DailyPostsFrequencyScanner = new DailyPostsFrequencyScanner();
         const knownProfilesScanner: KnownProfilesScanner = new KnownProfilesScanner();
         const otherSitesScanner: OtherSitesScanner = new OtherSitesScanner();
@@ -41,7 +41,7 @@ export default class ScannersFactory {
         this._scanners.push( dailyPostsFrequencyScanner );
         this._scanners.push( emojiScanner );
         this._scanners.push( hashtagScanner );
-        this._scanners.push( mentionScanner );
+        this._scanners.push( mentionsAndLikesScanner );
         this._scanners.push( knownProfilesScanner );
         this._scanners.push( otherSitesScanner );
         this._scanners.push( mostPopularPostsScanner );

@@ -36,7 +36,7 @@ flowchart RL
         F[User Details Scanner] <---> B
         G[Emoji Scanner] <---> B
         K[Daily Frequency Posts Scanner]  <---> B
-        L[Mentions Scanner]  <---> B
+        L[Mentions and Liked Profiles Scanner]  <---> B
         D[Profile Picture Scanner] <---> B
         N[Known Profiles Scanner] <---> B
         O[NASK profiles list] <---> N

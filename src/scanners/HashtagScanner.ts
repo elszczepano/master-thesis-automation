@@ -19,9 +19,9 @@ export default class HashtagScanner extends Scanner {
             hashtags = [ ...hashtags, ...currentTweetHashtags ];
         } );
 
-        const hashtagsFrequency: Record<string, number> = Utils.sortByFrequency( Utils.countFrequency( hashtags ) );
+        const hashtagsFrequency: [ string, number ][] = Utils.sortByFrequency( hashtags );
 
-        if ( !Object.keys( hashtagsFrequency ).length ) {
+        if ( !hashtagsFrequency.length ) {
             return {
                 value: 'N/A',
                 explanation: 'The scanned profile does not use hashtags.'
@@ -31,7 +31,7 @@ export default class HashtagScanner extends Scanner {
         let value = '<p>Most frequent hashtags:</p><ul class="hashtags_frequency">';
 
         // Get only the most frequently used hashtags
-        for ( const [ hashtag, frequency ] of Object.entries( hashtagsFrequency ).slice( 0, HASHTAG_FREQUENCY_LIMIT ) ) {
+        for ( const [ hashtag, frequency ] of hashtagsFrequency.slice( 0, HASHTAG_FREQUENCY_LIMIT ) ) {
             value += `<li><a href="https://twitter.com/hashtag/${ hashtag }" target="_blank"><strong>${ hashtag }</strong></a> (${ frequency } ${ frequency == 1 ? 'occurrence' : 'occurrences' })</li>`;
         }
 
