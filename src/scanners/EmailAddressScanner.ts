@@ -36,7 +36,7 @@ export default class EmailAddressScanner extends Scanner {
         await page.waitForTimeout( 1000 );
         
         // Search for email field via X-Path.
-        const [ resetPasswordElement ] = await page.$x( `//span[contains(text(),'Email')]` );
+        const [ resetPasswordElement ] = await page.$x( `//span[contains(text(),'Email a confirmation code')]` );
 
         let email: string = '';
 

@@ -9,3 +9,5 @@ darwinlabs
 
 notebooks/.ipynb_checkpoints
 notebooks/sourcedata
+
+.DS_Store
