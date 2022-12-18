@@ -11,7 +11,7 @@ html
               | Report for 
               a(target="_blank" href="https://twitter.com/" + profile) #{profile}
             p
-              | Report has been compared to <strong>#{documentsCount}</strong> reports in the database.
+              | Report has been compared to <strong>#{documentsCount - 1}</strong> reports in the database.
             table(class="table scanner_results")
               thead
                 tr 

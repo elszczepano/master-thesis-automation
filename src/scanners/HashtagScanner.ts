@@ -32,7 +32,7 @@ export default class HashtagScanner extends Scanner {
 
         // Get only the most frequently used hashtags
         for ( const [ hashtag, frequency ] of hashtagsFrequency.slice( 0, HASHTAG_FREQUENCY_LIMIT ) ) {
-            value += `<li><a href="https://twitter.com/hashtag/${ hashtag }" target="_blank"><strong>${ hashtag }</strong></a> (${ frequency } ${ frequency == 1 ? 'occurrence' : 'occurrences' })</li>`;
+            value += `<li><a href="https://twitter.com/hashtag/${ hashtag.slice( 1 ) }" target="_blank"><strong>${ hashtag }</strong></a> (${ frequency } ${ frequency == 1 ? 'occurrence' : 'occurrences' })</li>`;
         }
 
         value = value + '</ul>';
