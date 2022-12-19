@@ -39,7 +39,10 @@ export default class PostsFrequencyScanner extends Scanner {
         const maxTweetsPerDay: number = frequencies.length ? Math.max( ...frequencies ) : 0;
         const averageTweetsPerDay: number = frequencies.length ? Utils.getAverageValue( [ ...frequencies ] ): 0;
         const profileLifetime: number = Utils.getDaysDiff( new Date(), new Date( tweets[ tweets.length - 1 ].created_at ) );
-        const averageTweetsPerDayOverall: number = tweets.length / profileLifetime;
+        const averageTweetsPerDayOverall: number = Math.round(
+            user.public_metrics.tweet_count / Utils.getDaysDiff( new Date(), new Date( user.created_at ) )
+        );
+        const inactiveDays: number = profileLifetime - [ ...postsFrequencyMap.keys() ].length ;
 
         const statistics: IReportsStatistics = await this._reportsModel.getStatistics();
 
@@ -53,12 +56,13 @@ export default class PostsFrequencyScanner extends Scanner {
             value: `
             <ul class="details__list">
                 <li>Last activity at: <strong>${ lastActivityAt.toISOString() }</strong></li>
-                <li>Average number of posts in active days: <strong ${ averageTweetsPerDay > statistics.averageTweetsPerDayActiveDays * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ averageTweetsPerDay.toFixed( 2 ) }</strong> (counts only days where at least one tweet was posted)</li>
-                <li>Average number of posts overall: <strong ${ averageTweetsPerDayOverall > statistics.averageTweetsPerDayOverall * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ averageTweetsPerDayOverall.toFixed( 2 ) }</strong> (incl. inactive days)</li>
-                <li>Number of inactive days in a given period: <strong>${ profileLifetime - [ ...postsFrequencyMap.keys() ].length }</strong></li>
+                <li>Average number of posts in active days (scanned period): <strong ${ averageTweetsPerDay > statistics.averageTweetsPerDayActiveDays * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ averageTweetsPerDay }</strong> (counts only days where at least one tweet was posted)</li>
+                <li>Average number of posts overall: <strong ${ averageTweetsPerDayOverall > statistics.averageTweetsPerDayOverall * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ averageTweetsPerDayOverall }</strong> (incl. inactive days)</li>
+                <li>Number of inactive days in a given period: <strong>${ inactiveDays < 0 ? 0 : inactiveDays }</strong></li>
                 <li>Max posts in a single day: <strong ${ maxTweetsPerDay > statistics.maxTweetsPerDay * 2 ? SUSPICIOUS_CONTENT_CLASS : '' }>${ maxTweetsPerDay }</strong></li>
                 <li>Probably planned posts count: <strong ${ probablyPlannedPostsCount / user.public_metrics.tweet_count > SUSPICIOUS_PLANNED_POSTS_RATIO ? SUSPICIOUS_CONTENT_CLASS : '' }>${ probablyPlannedPostsCount } (${ probablyPlannedPostsCount ? ( ( probablyPlannedPostsCount / user.public_metrics.tweet_count ) * 100 ).toFixed( 2 ) : 0 }%)</strong></li>
                 <li>Posts created via: <ul class="disc_list">${ mappedSources }</ul></li>
+                <li>Number of scanned tweets (From: (${ new Date( tweets[ tweets.length - 1 ].created_at ).toISOString() })): <strong>${ tweets.length }</strong></li>
             </ul>
             `,
             explanation: `
@@ -77,7 +81,7 @@ export default class PostsFrequencyScanner extends Scanner {
             dataToSave: {
                 averageTweetsPerDayActiveDays: averageTweetsPerDay,
                 averageTweetsPerDayOverall,
-                probablyPlannedPostsCount,
+                probablyPlannedPostsCount: ( probablyPlannedPostsCount / user.public_metrics.tweet_count ) * 100,
                 maxTweetsPerDay
             }   
         };
