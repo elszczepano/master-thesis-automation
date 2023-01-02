@@ -75,7 +75,7 @@ export default class PostsFrequencyScanner extends Scanner {
                     <li>Average number of posts in active days: <strong>${ statistics.averageTweetsPerDayActiveDays.toFixed( 2 ) }</strong></li>
                     <li>Average number of posts overall: <strong>${ statistics.averageTweetsPerDayOverall.toFixed( 2 ) }</strong></li>
                     <li>Max posts in a single day: <strong>${ statistics.maxTweetsPerDay.toFixed( 2 ) }</strong></li>
-                    <li>Probably planned posts count: <strong>${ statistics.probablyPlannedPostsCount.toFixed( 2 ) }</strong></li>
+                    <li>Probably planned posts percentage: <strong>${ statistics.probablyPlannedPostsCount.toFixed( 2 ) }</strong></li>
                 </ul>
             `,
             dataToSave: {
