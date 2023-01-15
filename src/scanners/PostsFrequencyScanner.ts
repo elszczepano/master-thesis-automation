@@ -81,7 +81,7 @@ export default class PostsFrequencyScanner extends Scanner {
             dataToSave: {
                 averageTweetsPerDayActiveDays: averageTweetsPerDay,
                 averageTweetsPerDayOverall,
-                probablyPlannedPostsCount: ( probablyPlannedPostsCount / user.public_metrics.tweet_count ) * 100,
+                probablyPlannedPostsCount: ( probablyPlannedPostsCount / tweets.length ) * 100,
                 maxTweetsPerDay
             }   
         };
