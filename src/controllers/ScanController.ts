@@ -43,6 +43,7 @@ export interface ITweet {
     text: string;
     created_at: string;
     source: string;
+    lang: string;
     public_metrics: {
         retweet_count: number;
         reply_count: number;

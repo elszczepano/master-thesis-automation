@@ -37,7 +37,7 @@ export default class Utils {
         paginationToken?: string,
         timeRange: { startDate?: Date; endDate?: Date; } = {}
     ): string {
-        let queryParams: string = `?max_results=${ MAX_RESULTS_PER_PAGE }&tweet.fields=created_at,source,public_metrics`;
+        let queryParams: string = `?max_results=${ MAX_RESULTS_PER_PAGE }&tweet.fields=created_at,source,public_metrics,lang`;
 
         if ( paginationToken ) {
             queryParams = `${ queryParams }&pagination_token=${ paginationToken }`;

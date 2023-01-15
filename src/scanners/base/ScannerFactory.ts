@@ -16,6 +16,7 @@ import KnownProfilesScanner from '../KnownProfilesScanner';
 import OtherSitesScanner from '../OtherSitesScanner';
 import MostPopularPostsScanner from '../MostPopularPostsScanner';
 import GeolocationScanner from '../GeolocationScanner';
+import UsedLanguageScanner from '../UsedLanguageScanner';
 
 export default class ScannersFactory {
     private readonly _scanners: IScanner[] = [];
@@ -33,6 +34,7 @@ export default class ScannersFactory {
         const otherSitesScanner: OtherSitesScanner = new OtherSitesScanner();
         const mostPopularPostsScanner: MostPopularPostsScanner = new MostPopularPostsScanner();
         const geolocationScanner: GeolocationScanner = new GeolocationScanner( httpClient );
+        const usedLanguageScanner: UsedLanguageScanner = new UsedLanguageScanner();
 
         this._scanners.push( userDetailsScanner );
         this._scanners.push( postsFrequencyScanner );
@@ -46,6 +48,7 @@ export default class ScannersFactory {
         this._scanners.push( otherSitesScanner );
         this._scanners.push( mostPopularPostsScanner );
         this._scanners.push( geolocationScanner );
+        this._scanners.push( usedLanguageScanner );
     }
 
     public get scanners(): IScanner[] {
