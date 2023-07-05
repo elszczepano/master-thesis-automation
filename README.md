@@ -28,7 +28,7 @@ The application is an automation prepared for Master thesis research and experim
 
 ```mermaid
 flowchart RL
-    A(Actor) -- passes account ID ----> B[Application]
+    A(Analyst) -- passes account ID ----> B[Application]
     B -- returns report --> A
     subgraph Application
         C[Email Address Scanner] <---> B
@@ -62,7 +62,7 @@ flowchart RL
 
 ```mermaid
 sequenceDiagram
-    actor User as Actor
+    actor User as Analyst
     participant Application
     participant ScanController
     User->>Application: Passes Id
