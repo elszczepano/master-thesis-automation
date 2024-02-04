@@ -27,24 +27,33 @@ The application is an automation prepared for Master thesis research and experim
 ## Application flow diagram
 
 ```mermaid
+%%{
+  init: {
+    'theme': 'neutral',
+    'themeVariables': {
+      'fontSize': '40px'
+    }
+  }
+}%%
+
 flowchart RL
-    A(Analyst) -- passes account ID ----> B[Application]
+    A(Analyst) -- passes account ID ---> B[Application]
     B -- returns report --> A
-    subgraph Application
-        C[Email Address Scanner] <---> B
-        E[Posts Frequency Scanner] <---> B
-        F[User Details Scanner] <---> B
-        G[Emoji Scanner] <---> B
-        K[Daily Frequency Posts Scanner]  <---> B
-        L[Mentions and Liked Profiles Scanner]  <---> B
-        D[Profile Picture Scanner] <---> B
-        N[Known Profiles Scanner] <---> B
-        O[NASK profiles list] <---> N
-        R[Other Sites Scanner] <---> B
+    subgraph App
+        C[Email Address Scanner] <--> B
+        E[Posts Frequency Scanner] <--> B
+        F[User Detail Scanner] <--> B
+        G[Emoji Scanner] <--> B
+        K[Daily Frequency Post Scanner]  <--> B
+        L[Mention and Liked Profile Scanner]  <--> B
+        D[Profile Picture Scanner] <--> B
+        N[Known Profile Scanner] <--> B
+        O[NASK Profile list] <---> N
+        R[Other Site Scanner] <--> B
         S[Maigret] <---> R
-        T[Most Popular Posts Scanner] <---> B
-        U[Geolocation Scanner] <---> B
-        M[MongoDB] <---> B
+        T[Most Popular Post Scanner] <--> B
+        U[Geolocation Scanner] <--> B
+        M[MongoDB] <--> B
         H["Headless Chrome Browser (Puppeteer)"] <---> C
         I[V7 Labs] <---> D
         J[Twitter REST API] <---> D
